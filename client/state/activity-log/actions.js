@@ -29,6 +29,12 @@ export default {
 				timestamp: 1485220539222
 			},
 			{
+				title: 'Suspecious code detected in 2 plugin files.',
+				user: null,
+				type: 'suspecious_code',
+				timestamp: 1485220539222
+			},
+			{
 				title: 'Akismet activated',
 				user: { ID: 123, name: 'Jane A', role: 'Admin' },
 				type: 'plugin_activated',

@@ -18,6 +18,7 @@ import StatsNavigation from '../stats-navigation';
 import ActivityLogDay from '../activity-log-day';
 import QueryActivityLog from 'components/data/query-activity-log';
 import { getActivityLog, isFetchingActivityLog } from 'state/activity-log/selectors';
+import ActivityLogBanner from '../activity-log-banner';
 
 class ActivityLog extends Component {
 	componentDidMount() {
@@ -267,7 +268,7 @@ class ActivityLog extends Component {
 			moment,
 			siteId,
 		} = this.props;
-		const logs = this.props.activityLog.data;
+		const logs = ( activityLog && activityLog.data ? activityLog.data : [] );
 		const logsGroupedByDate = map(
 			groupBy(
 				logs.map( this.update_logs, this ),
@@ -293,10 +294,11 @@ class ActivityLog extends Component {
 					slug={ slug }
 					section="activity"
 				/>
+				<ActivityLogBanner logs={ logs } />
 				<section className="activity-log__wrapper">
 					{ logsGroupedByDate }
 				</section>
-				<QueryActivityLog siteId={ site.ID } />
+				<QueryActivityLog siteId={ siteId } />
 			</Main>
 		);
 	}

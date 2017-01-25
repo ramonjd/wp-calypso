@@ -1,0 +1,37 @@
+.activity-log-banner {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+  border-left: 3px solid $alert-red;
+  padding-left: 8px;
+}
+.activity-log-banner__icon {
+  width: 24px;
+  background-color: $alert-red;
+  color: $white;
+  height: 24px;
+  padding: 8px;
+  margin-right: 16px;
+  border-radius: 50%;
+}
+.activity-log-banner__content {
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 200px;
+}
+.activity-log-banner__action {
+  width: 50px;
+}
+
+.activity-log-banner__content-title {
+  color: $alert-red;
+  font-weight: 600;
+}
+
+.activity-log-banner__content-meta {
+  color: $gray;
+  font-size: 12px;
+}
