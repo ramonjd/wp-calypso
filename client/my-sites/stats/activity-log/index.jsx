@@ -16,6 +16,8 @@ import StatsFirstView from '../stats-first-view';
 import SidebarNavigation from 'my-sites/sidebar-navigation';
 import StatsNavigation from '../stats-navigation';
 import ActivityLogDay from '../activity-log-day';
+import QueryActivityLog from 'components/data/query-activity-log';
+import { getActivityLog, isFetchingActivityLog } from 'state/activity-log/selectors';
 
 class ActivityLog extends Component {
 	componentDidMount() {
@@ -262,12 +264,10 @@ class ActivityLog extends Component {
 
 	render() {
 		const {
-			isJetpack,
 			moment,
 			siteId,
-			slug,
 		} = this.props;
-		const logs = this.logs();
+		const logs = this.props.activityLog.data;
 		const logsGroupedByDate = map(
 			groupBy(
 				logs.map( this.update_logs, this ),
@@ -296,16 +296,21 @@ class ActivityLog extends Component {
 				<section className="activity-log__wrapper">
 					{ logsGroupedByDate }
 				</section>
+				<QueryActivityLog siteId={ site.ID } />
 			</Main>
 		);
 	}
 }
 
-export default connect( ( state ) => {
-	const siteId = getSelectedSiteId( state );
-	const isJetpack = isJetpackSite( state, siteId );
-	return {
-		isJetpack,
-		slug: getSiteSlug( state, siteId )
-	};
-} )( localize( ActivityLog ) );
+export default connect(
+	( state ) => {
+		const siteId = getSelectedSiteId( state );
+		const isJetpack = isJetpackSite( state, siteId );
+		return {
+			isJetpack,
+			slug: getSiteSlug( state, siteId ),
+			activityLog: getActivityLog( state, siteId ),
+			fetchingLog: isFetchingActivityLog( state, siteId )
+		};
+	}
+)( localize( ActivityLog ) );
