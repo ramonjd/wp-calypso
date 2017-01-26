@@ -1,37 +1,39 @@
 .activity-log-banner {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-  align-items: flex-start;
-  border-left: 3px solid $alert-red;
-  padding-left: 8px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-content: flex-start;
+	align-items: flex-start;
+	border-left: 3px solid $alert-red;
+	padding-left: 8px;
 }
 .activity-log-banner__icon {
-  width: 24px;
-  background-color: $alert-red;
-  color: $white;
-  height: 24px;
-  padding: 8px;
-  margin-right: 16px;
-  border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	margin-left: 2px;
+	margin-right: 16px;
+	padding: 8px;
+	color: $white;
+	background-color: $alert-red;
+	border-radius: 50%;
 }
 .activity-log-banner__content {
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 200px;
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: 200px;
 }
 .activity-log-banner__action {
-  width: 50px;
+	width: 50px;
 }
 
 .activity-log-banner__content-title {
-  color: $alert-red;
-  font-weight: 600;
+	margin-bottom: 8px;
+	font-weight: 600;
+	color: $alert-red;
 }
 
 .activity-log-banner__content-meta {
-  color: $gray;
-  font-size: 12px;
+	font-size: 12px;
+	color: $gray;
 }
