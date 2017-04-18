@@ -25,6 +25,7 @@ import { SEARCH_RESULTS } from 'reader/follow-button/follow-sources';
 import MobileBackToSidebar from 'components/mobile-back-to-sidebar';
 import { requestFeedSearch } from 'state/reader/feed-searches/actions';
 import { getReaderFeedsForQuery } from 'state/selectors';
+import SubscriptionListItem from 'reader/following-manage/connected-subscription-list-item';
 
 class SearchStream extends Component {
 	static propTypes = {
