@@ -17,7 +17,8 @@ import SidebarNavigation from 'my-sites/sidebar-navigation';
 import StatsNavigation from '../stats-navigation';
 import ActivityLogDay from '../activity-log-day';
 import QueryActivityLog from 'components/data/query-activity-log';
-import { getActivityLog, isFetchingActivityLog } from 'state/activity-log/selectors';
+import { getActivityLog, isFetchingActivityLog, isRestoring, isAnythingRestoring } from 'state/activity-log/selectors';
+import { requestRestore } from 'state/activity-log/actions';
 import ActivityLogBanner from '../activity-log-banner';
 
 class ActivityLog extends Component {
@@ -265,6 +266,9 @@ class ActivityLog extends Component {
 
 	render() {
 		const {
+			slug,
+			isJetpack,
+			activityLog,
 			moment,
 			siteId,
 		} = this.props;
@@ -280,6 +284,8 @@ class ActivityLog extends Component {
 					dateString={ moment( isoString ).format( 'LL' ) }
 					logs={ daily_logs }
 					siteId={ siteId }
+					requestRestore={ this.props.requestRestore }
+					isRestoring={ this.props.isRestoring }
 					isRewindEnabled={ true }
 				/>
 			)
@@ -294,7 +300,7 @@ class ActivityLog extends Component {
 					slug={ slug }
 					section="activity"
 				/>
-				<ActivityLogBanner logs={ logs } />
+				<ActivityLogBanner logs={ logs } isRestoring={ this.props.isAnythingRestoring } />
 				<section className="activity-log__wrapper">
 					{ logsGroupedByDate }
 				</section>
@@ -312,7 +318,12 @@ export default connect(
 			isJetpack,
 			slug: getSiteSlug( state, siteId ),
 			activityLog: getActivityLog( state, siteId ),
-			fetchingLog: isFetchingActivityLog( state, siteId )
+			fetchingLog: isFetchingActivityLog( state, siteId ),
+			isRestoring: timestamp => isRestoring( state, siteId, timestamp ),
+			isAnythingRestoring: isAnythingRestoring( state, siteId )
 		};
+	},
+	{
+		requestRestore
 	}
 )( localize( ActivityLog ) );
