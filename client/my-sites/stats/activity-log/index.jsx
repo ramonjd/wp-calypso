@@ -17,9 +17,10 @@ import SidebarNavigation from 'my-sites/sidebar-navigation';
 import StatsNavigation from '../stats-navigation';
 import ActivityLogDay from '../activity-log-day';
 import QueryActivityLog from 'components/data/query-activity-log';
-import { getActivityLog, isFetchingActivityLog, isRestoring, isAnythingRestoring } from 'state/activity-log/selectors';
-import { requestRestore } from 'state/activity-log/actions';
+import { getActivityLog, isFetchingActivityLog, isRestoring, isAnythingRestoring, isActivatingRewind, isDeactivatingRewind } from 'state/activity-log/selectors';
+import { requestRestore, activateRewind, deactivateRewind } from 'state/activity-log/actions';
 import ActivityLogBanner from '../activity-log-banner';
+import ActivityLogToggle from '../activity-log-toggle';
 
 class ActivityLog extends Component {
 	componentDidMount() {
@@ -300,6 +301,13 @@ class ActivityLog extends Component {
 					slug={ slug }
 					section="activity"
 				/>
+				<ActivityLogToggle
+					siteId={ site.ID }
+					activateRewind={ this.props.activateRewind }
+					deactivateRewind={ this.props.deactivateRewind }
+					isActivatingRewind={ this.props.isActivatingRewind }
+					isDeactivatingRewind={ this.props.isDeactivatingRewind }
+				/>
 				<ActivityLogBanner logs={ logs } isRestoring={ this.props.isAnythingRestoring } />
 				<section className="activity-log__wrapper">
 					{ logsGroupedByDate }
@@ -320,10 +328,14 @@ export default connect(
 			activityLog: getActivityLog( state, siteId ),
 			fetchingLog: isFetchingActivityLog( state, siteId ),
 			isRestoring: timestamp => isRestoring( state, siteId, timestamp ),
-			isAnythingRestoring: isAnythingRestoring( state, siteId )
+			isAnythingRestoring: isAnythingRestoring( state, siteId ),
+			isActivatingRewind: isActivatingRewind( state, siteId ),
+			isDeactivatingRewind: isDeactivatingRewind( state, siteId )
 		};
 	},
 	{
-		requestRestore
+		requestRestore,
+		activateRewind,
+		deactivateRewind
 	}
 )( localize( ActivityLog ) );

@@ -14,7 +14,13 @@ import {
 	ACTIVITY_LOG_FETCH_SUCCESS,
 	RESTORE_REQUEST,
 	RESTORE_REQUEST_SUCCESS,
-	RESTORE_REQUEST_FAILED
+	RESTORE_REQUEST_FAILED,
+	REWIND_ACTIVATE_REQUEST,
+	REWIND_ACTIVATE_SUCCESS,
+	REWIND_ACTIVATE_FAILED,
+	REWIND_DEACTIVATE_REQUEST,
+	REWIND_DEACTIVATE_SUCCESS,
+	REWIND_DEACTIVATE_FAILED
 } from 'state/action-types';
 
 // This generates a fake data set for hourly backups
@@ -237,7 +243,7 @@ export function requestRestore( siteId, timestamp ) {
 			timestamp
 		} );
 
-		return wpcom.undocumented().requestRestore( siteId, timestamp )
+		return wpcom.undocumented().rewindRequestRestore( siteId, timestamp )
 			.then( () => {
 				dispatch( {
 					type: RESTORE_REQUEST_SUCCESS,
@@ -250,6 +256,68 @@ export function requestRestore( siteId, timestamp ) {
 					type: RESTORE_REQUEST_FAILED,
 					siteId,
 					timestamp,
+					error: pick( error, [ 'error', 'status', 'message' ] )
+				} );
+			} );
+	};
+}
+
+/**
+ * Returns an action thunk which, when invoked, triggers a request to activate the Rewind feature.
+ *
+ * @param  {int} siteId    ID of the site to activate Rewind.
+ *
+ * @return {Function}      Action thunk
+ */
+export function activateRewind( siteId ) {
+	return ( dispatch ) => {
+		dispatch( {
+			type: REWIND_ACTIVATE_REQUEST,
+			siteId
+		} );
+
+		return wpcom.undocumented().rewindActivate( siteId )
+			.then( () => {
+				dispatch( {
+					type: REWIND_ACTIVATE_SUCCESS,
+					siteId
+				} );
+			} )
+			.catch( error => {
+				dispatch( {
+					type: REWIND_ACTIVATE_FAILED,
+					siteId,
+					error: pick( error, [ 'error', 'status', 'message' ] )
+				} );
+			} );
+	};
+}
+
+/**
+ * Returns an action thunk which, when invoked, triggers a request to deactivate the Rewind feature.
+ *
+ * @param  {int} siteId    ID of the site to activate Rewind.
+ *
+ * @return {Function}      Action thunk
+ */
+export function deactivateRewind( siteId ) {
+	return ( dispatch ) => {
+		dispatch( {
+			type: REWIND_DEACTIVATE_REQUEST,
+			siteId
+		} );
+
+		return wpcom.undocumented().rewindDeactivate( siteId )
+			.then( () => {
+				dispatch( {
+					type: REWIND_DEACTIVATE_SUCCESS,
+					siteId
+				} );
+			} )
+			.catch( error => {
+				dispatch( {
+					type: REWIND_DEACTIVATE_FAILED,
+					siteId,
 					error: pick( error, [ 'error', 'status', 'message' ] )
 				} );
 			} );
