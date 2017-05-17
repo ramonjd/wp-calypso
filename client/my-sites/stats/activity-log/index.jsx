@@ -302,7 +302,7 @@ class ActivityLog extends Component {
 					section="activity"
 				/>
 				<ActivityLogToggle
-					siteId={ site.ID }
+					siteId={ siteId }
 					activateRewind={ this.props.activateRewind }
 					deactivateRewind={ this.props.deactivateRewind }
 					isActivatingRewind={ this.props.isActivatingRewind }
