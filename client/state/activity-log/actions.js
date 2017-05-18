@@ -20,7 +20,10 @@ import {
 	REWIND_ACTIVATE_FAILED,
 	REWIND_DEACTIVATE_REQUEST,
 	REWIND_DEACTIVATE_SUCCESS,
-	REWIND_DEACTIVATE_FAILED
+	REWIND_DEACTIVATE_FAILED,
+	REWIND_STATUS_REQUEST,
+	REWIND_STATUS_SUCCESS,
+	REWIND_STATUS_FAILED
 } from 'state/action-types';
 
 // This generates a fake data set for hourly backups
@@ -48,6 +51,31 @@ const fakebackups = () => {
 
 	return backupLogs;
 };
+
+export function getRewindStatus( siteId ) {
+	return ( dispatch ) => {
+		dispatch( {
+			type: REWIND_STATUS_REQUEST,
+			siteId
+		} );
+
+		return wpcom.undocumented().rewindStatus( siteId )
+			.then( ( response ) => {
+				dispatch( {
+					type: REWIND_STATUS_SUCCESS,
+					data: response,
+					siteId
+				} );
+			} )
+			.catch( error => {
+				dispatch( {
+					type: REWIND_STATUS_FAILED,
+					siteId,
+					error: pick( error, [ 'error', 'status', 'message' ] )
+				} );
+			} );
+	};
+}
 
 export function	getActivityLogData( siteId ) {
 	// const logs = [

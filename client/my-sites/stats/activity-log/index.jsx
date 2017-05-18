@@ -17,6 +17,7 @@ import SidebarNavigation from 'my-sites/sidebar-navigation';
 import StatsNavigation from '../stats-navigation';
 import ActivityLogDay from '../activity-log-day';
 import QueryActivityLog from 'components/data/query-activity-log';
+import QueryRewindStatus from 'components/data/query-rewind-status';
 import { getActivityLog, isFetchingActivityLog, isRestoring, isAnythingRestoring, isActivatingRewind, isDeactivatingRewind } from 'state/activity-log/selectors';
 import { requestRestore, activateRewind, deactivateRewind } from 'state/activity-log/actions';
 import ActivityLogBanner from '../activity-log-banner';
@@ -313,6 +314,7 @@ class ActivityLog extends Component {
 					{ logsGroupedByDate }
 				</section>
 				<QueryActivityLog siteId={ siteId } />
+				<QueryRewindStatus siteId={ siteId } />
 			</Main>
 		);
 	}
