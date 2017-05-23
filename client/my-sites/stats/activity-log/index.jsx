@@ -18,7 +18,15 @@ import StatsNavigation from '../stats-navigation';
 import ActivityLogDay from '../activity-log-day';
 import QueryActivityLog from 'components/data/query-activity-log';
 import QueryRewindStatus from 'components/data/query-rewind-status';
-import { getActivityLog, isFetchingActivityLog, isRestoring, isAnythingRestoring, isActivatingRewind, isDeactivatingRewind } from 'state/activity-log/selectors';
+import {
+	isRewindActive,
+	getActivityLog,
+	isFetchingActivityLog,
+	isRestoring,
+	isAnythingRestoring,
+	isActivatingRewind,
+	isDeactivatingRewind
+} from 'state/activity-log/selectors';
 import { requestRestore, activateRewind, deactivateRewind } from 'state/activity-log/actions';
 import ActivityLogBanner from '../activity-log-banner';
 import ActivityLogToggle from '../activity-log-toggle';
@@ -304,6 +312,7 @@ class ActivityLog extends Component {
 				/>
 				<ActivityLogToggle
 					siteId={ siteId }
+					isActive={ this.props.isRewindActive }
 					activateRewind={ this.props.activateRewind }
 					deactivateRewind={ this.props.deactivateRewind }
 					isActivatingRewind={ this.props.isActivatingRewind }
@@ -326,6 +335,7 @@ export default connect(
 		const isJetpack = isJetpackSite( state, siteId );
 		return {
 			isJetpack,
+			isRewindActive: isRewindActive( state, siteId ),
 			slug: getSiteSlug( state, siteId ),
 			activityLog: getActivityLog( state, siteId ),
 			fetchingLog: isFetchingActivityLog( state, siteId ),

@@ -308,6 +308,7 @@ export function activateRewind( siteId ) {
 			.then( () => {
 				dispatch( {
 					type: REWIND_ACTIVATE_SUCCESS,
+					use_rewind: true,
 					siteId
 				} );
 			} )
@@ -339,6 +340,7 @@ export function deactivateRewind( siteId ) {
 			.then( () => {
 				dispatch( {
 					type: REWIND_DEACTIVATE_SUCCESS,
+					use_rewind: false,
 					siteId
 				} );
 			} )
