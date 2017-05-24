@@ -58,7 +58,6 @@ class SearchStream extends Component {
 	updateQuery = newValue => {
 		this.scrollToTop();
 		const trimmedValue = trim( newValue ).substring( 0, 1024 );
-
 		if (
 			( trimmedValue !== '' && trimmedValue.length > 1 && trimmedValue !== this.props.query ) ||
 			newValue === ''
@@ -130,7 +129,6 @@ class SearchStream extends Component {
 		const { query, suggestions, translate } = this.props;
 		const emptyContent = <EmptyContent query={ query } />;
 		const sortOrder = this.props.postsStore && this.props.postsStore.sortOrder;
-
 		const transformStreamItems = ! query || query === ''
 			? postKey => ( { ...postKey, isRecommendation: true } )
 			: identity;
@@ -201,14 +199,12 @@ class SearchStream extends Component {
 							<SegmentedControl compact className="search-stream__sort-picker">
 								<ControlItem selected={ sortOrder !== 'date' } onClick={ this.useRelevanceSort }>
 									{ TEXT_RELEVANCE_SORT }
-
 								</ControlItem>
 								<ControlItem selected={ sortOrder === 'date' } onClick={ this.useDateSort }>
 									{ TEXT_DATE_SORT }
 								</ControlItem>
 							</SegmentedControl> }
 					</CompactCard>
-
 					<p className="search-stream__blank-suggestions">
 						{ suggestions &&
 							this.props.translate( 'Suggestions: {{suggestions /}}.', {
