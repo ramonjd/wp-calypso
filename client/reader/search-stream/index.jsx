@@ -2,7 +2,7 @@
  * External Dependencies
  */
 import React, { Component } from 'react';
-import { initial, flatMap, trim, debounce, identity } from 'lodash';
+import { trim, debounce, identity } from 'lodash';
 import { localize } from 'i18n-calypso';
 import { connect } from 'react-redux';
 
@@ -19,7 +19,6 @@ import HeaderBack from 'reader/header-back';
 import SearchInput from 'components/search';
 import { recordAction, recordTrack } from 'reader/stats';
 import SuggestionProvider from './suggestion-provider';
-import Suggestion from './suggestion';
 import { RelatedPostCard } from 'blocks/reader-related-card-v2';
 import { SEARCH_RESULTS } from 'reader/follow-button/follow-sources';
 import MobileBackToSidebar from 'components/mobile-back-to-sidebar';
@@ -126,7 +125,7 @@ class SearchStream extends Component {
 	};
 
 	render() {
-		const { query, suggestions, translate } = this.props;
+		const { query, translate } = this.props;
 		const emptyContent = <EmptyContent query={ query } />;
 		const sortOrder = this.props.postsStore && this.props.postsStore.sortOrder;
 		const transformStreamItems = ! query || query === ''
@@ -137,21 +136,6 @@ class SearchStream extends Component {
 		if ( ! searchPlaceholderText ) {
 			searchPlaceholderText = translate( 'Search billions of WordPress.com posts…' );
 		}
-
-		const suggestionList = initial(
-			flatMap(
-				suggestions,
-				suggestion => [
-					<Suggestion
-						suggestion={ suggestion.text }
-						source="search"
-						sort={ sortOrder === 'date' ? sortOrder : undefined }
-						railcar={ suggestion.railcar }
-					/>,
-					', ',
-				]
-			)
-		);
 
 		const documentTitle = translate( '%s ‹ Reader', {
 			args: this.state.title || this.props.translate( 'Search' ),
@@ -205,16 +189,6 @@ class SearchStream extends Component {
 								</ControlItem>
 							</SegmentedControl> }
 					</CompactCard>
-					<p className="search-stream__blank-suggestions">
-						{ suggestions &&
-							this.props.translate( 'Suggestions: {{suggestions /}}.', {
-								components: {
-									suggestions: suggestionList,
-								},
-							} ) }&nbsp;
-					</p>
-
-					<hr className="search-stream__fixed-area-separator" />
 				</div>
 				{ query && <ConnectedSiteResults query={ query } /> }
 			</Stream>
@@ -235,7 +209,8 @@ class SitesResults extends React.Component {
 
 	render() {
 		return (
-			<div className="sites-results">
+			<div className="search-stream__sites-results">
+				<h1 className="search-stream__sites-results-header">Sites</h1>
 				{ this.props.feeds
 					? this.props.feeds.map(
 							feed => (
@@ -243,6 +218,7 @@ class SitesResults extends React.Component {
 									key={ feed.feed_ID }
 									feedId={ feed.feed_ID }
 									blogId={ feed.blogId }
+									showLastUpdatedDate={ false }
 								/>
 							)
 						)
