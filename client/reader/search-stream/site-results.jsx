@@ -22,7 +22,7 @@ class SitesResults extends React.Component {
 		const { query, translate, searchResults } = this.props;
 
 		return (
-			<div className="search-stream__site-results">
+			<div>
 				<QueryReaderFeedsSearch query={ query } />
 				{ searchResults
 					? searchResults.map(

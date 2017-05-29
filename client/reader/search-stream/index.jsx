@@ -169,15 +169,21 @@ class SearchStream extends Component {
 								</ControlItem>
 							</SegmentedControl> }
 					</CompactCard>
+					<div className="search-stream__headers">
+						<div className="search-stream__post-header">
+							<h1 className="search-stream__results-header">{ translate( 'Posts' ) }</h1>
+						</div>
+						<div className="search-stream__site-header">
+						<h1 className="search-stream__results-header">{ translate( 'Sites' ) }</h1>
+						</div>
+					</div>
 				</div>
 				<div className="search-stream__results">
 					<div className="search-stream__post-results">
-						<h1 className="search-stream__results-header">{ translate( 'Posts' ) }</h1>
 						<PostResults { ...this.props } />
 					</div>
 					{ query &&
 						<div className="search-stream__site-results">
-							<h1 className="search-stream__results-header">{ translate( 'Sites' ) }</h1>
 							<SiteResults query={ query } />
 						</div> }
 				</div>
