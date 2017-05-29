@@ -169,7 +169,7 @@ class SearchStream extends Component {
 								</ControlItem>
 							</SegmentedControl> }
 					</CompactCard>
-					<div className="search-stream__headers">
+					{ query && <div className="search-stream__headers">
 						<div className="search-stream__post-header">
 							<h1 className="search-stream__results-header">{ translate( 'Posts' ) }</h1>
 						</div>
@@ -177,6 +177,7 @@ class SearchStream extends Component {
 						<h1 className="search-stream__results-header">{ translate( 'Sites' ) }</h1>
 						</div>
 					</div>
+					}
 				</div>
 				<div className="search-stream__results">
 					<div className="search-stream__post-results">
