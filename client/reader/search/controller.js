@@ -33,9 +33,9 @@ const exported = {
 	search: function( context ) {
 		const basePath = '/read/search',
 			fullAnalyticsPageTitle = analyticsPageTitle + ' > Search',
-			searchSlug = context.query.q,
-			sort = context.query.sort || 'relevance',
 			mcKey = 'search';
+
+		const { sort = 'relevance', q: searchSlug, searchType = 'Posts' } = context.query;
 
 		let store;
 		if ( searchSlug ) {
@@ -86,6 +86,7 @@ const exported = {
 				autoFocusInput={ autoFocusInput }
 				onQueryChange={ reportQueryChange }
 				onSortChange={ reportSortChange }
+				searchType={ searchType }
 			/>,
 			document.getElementById( 'primary' ),
 			context.store
