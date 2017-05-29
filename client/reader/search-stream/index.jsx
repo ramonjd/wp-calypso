@@ -2,7 +2,7 @@
  * External Dependencies
  */
 import React, { Component } from 'react';
-import { trim, debounce, identity } from 'lodash';
+import { trim, debounce } from 'lodash';
 import { localize } from 'i18n-calypso';
 
 /**
@@ -12,16 +12,17 @@ import ControlItem from 'components/segmented-control/item';
 import SegmentedControl from 'components/segmented-control';
 import CompactCard from 'components/card/compact';
 import DocumentHead from 'components/data/document-head';
-import Stream from 'reader/stream';
-import EmptyContent from './empty';
-import HeaderBack from 'reader/header-back';
+// import Stream from 'reader/stream';
+// import EmptyContent from './empty';
+// import HeaderBack from 'reader/header-back';
 import SearchInput from 'components/search';
 import { recordAction, recordTrack } from 'reader/stats';
-import SuggestionProvider from './suggestion-provider';
 import { RelatedPostCard } from 'blocks/reader-related-card-v2';
-import { SEARCH_RESULTS } from 'reader/follow-button/follow-sources';
+// import { SEARCH_RESULTS } from 'reader/follow-button/follow-sources';
 import MobileBackToSidebar from 'components/mobile-back-to-sidebar';
 import SiteResults from './site-results';
+import PostResults from './post-results';
+import ReaderMain from 'components/reader-main';
 
 class SearchStream extends Component {
 	static propTypes = {
@@ -66,17 +67,12 @@ class SearchStream extends Component {
 		window.scrollTo( 0, 0 );
 	};
 
-	handleStreamMounted = ref => {
-		this.streamRef = ref;
-	};
-
-	handleSearchBoxMounted = ref => {
-		this.searchBoxRef = ref;
-	};
+	handleMainMounted = ref => this.mainRef = ref;
+	handleSearchBoxMounted = ref => this.searchBoxRef = ref;
 
 	resizeSearchBox = () => {
-		if ( this.searchBoxRef && this.streamRef ) {
-			const width = this.streamRef.getClientRects()[ 0 ].width;
+		if ( this.searchBoxRef && this.mainRef ) {
+			const width = this.mainRef.getClientRects()[ 0 ].width;
 			if ( width > 0 ) {
 				this.searchBoxRef.style.width = `${ width }px`;
 			}
@@ -123,11 +119,8 @@ class SearchStream extends Component {
 
 	render() {
 		const { query, translate } = this.props;
-		const emptyContent = <EmptyContent query={ query } />;
+		// const emptyContent = <EmptyContent query={ query } />;
 		const sortOrder = this.props.postsStore && this.props.postsStore.sortOrder;
-		const transformStreamItems = ! query || query === ''
-			? postKey => ( { ...postKey, isRecommendation: true } )
-			: identity;
 
 		let searchPlaceholderText = this.props.searchPlaceholderText;
 		if ( ! searchPlaceholderText ) {
@@ -147,24 +140,14 @@ class SearchStream extends Component {
 		} );
 
 		return (
-			<Stream
-				{ ...this.props }
-				followSource={ SEARCH_RESULTS }
-				listName={ translate( 'Search' ) }
-				emptyContent={ emptyContent }
-				showFollowInHeader={ true }
-				placeholderFactory={ this.placeholderFactory }
-				className="search-stream"
-				shouldCombineCards={ true }
-				transformStreamItems={ transformStreamItems }
-			>
-				{ this.props.showBack && <HeaderBack /> }
-				<div ref={ this.handleStreamMounted } />
+			<ReaderMain className="search-stream" wideLayout>
+				{ /* just for width measurement */ }
+				<div ref={ this.handleMainMounted } style={ { width: '100%' } } />
+				<DocumentHead title={ documentTitle } />
+				<MobileBackToSidebar>
+					<h1>{ translate( 'Streams' ) }</h1>
+				</MobileBackToSidebar>
 				<div className="search-stream__fixed-area" ref={ this.handleSearchBoxMounted }>
-					<DocumentHead title={ documentTitle } />
-					<MobileBackToSidebar>
-						<h1>{ translate( 'Streams' ) }</h1>
-					</MobileBackToSidebar>
 					<CompactCard className="search-stream__input-card">
 						<SearchInput
 							onSearch={ this.updateQuery }
@@ -187,10 +170,20 @@ class SearchStream extends Component {
 							</SegmentedControl> }
 					</CompactCard>
 				</div>
-				{ query && <SiteResults query={ query } /> }
-			</Stream>
+				<div className="search-stream__results">
+					<div className="search-stream__post-results">
+						<h1 className="search-stream__results-header">{ translate( 'Posts' ) }</h1>
+						<PostResults { ...this.props } />
+					</div>
+					{ query &&
+						<div className="search-stream__site-results">
+							<h1 className="search-stream__results-header">{ translate( 'Sites' ) }</h1>
+							<SiteResults query={ query } />
+						</div> }
+				</div>
+			</ReaderMain>
 		);
 	}
 }
 
-export default SuggestionProvider( localize( SearchStream ) );
+export default localize( SearchStream );

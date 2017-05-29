@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
  */
 import { getReaderFeedsForQuery } from 'state/selectors';
 import QueryReaderFeedsSearch from 'components/data/query-reader-feeds-search';
-import SubscriptionListItem from 'reader/following-manage/connected-subscription-list-item';
+import SubscriptionListItem from 'blocks/reader-subscription-list-item/connected';
 
 class SitesResults extends React.Component {
 	static propTypes = {
@@ -22,16 +22,15 @@ class SitesResults extends React.Component {
 		const { query, translate, searchResults } = this.props;
 
 		return (
-			<div className="search-stream__sites-results">
+			<div className="search-stream__site-results">
 				<QueryReaderFeedsSearch query={ query } />
-				<h1 className="search-stream__sites-results-header">{ translate( 'Sites' ) }</h1>
 				{ searchResults
 					? searchResults.map(
 							feed => (
 								<SubscriptionListItem
 									key={ feed.feed_ID }
-									feedId={ feed.feed_ID }
-									blogId={ feed.blogId }
+									feedId={ +feed.feed_ID }
+									blogId={ +feed.blogId }
 									showLastUpdatedDate={ false }
 								/>
 							)
