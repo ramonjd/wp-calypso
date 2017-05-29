@@ -185,6 +185,10 @@ class DomainDetailsForm extends Component {
 		return formState.getFieldValue( this.state.form, 'countryCode' ) === 'NL' && cartItems.hasTld( this.props.cart, 'nl' );
 	}
 
+	allDomainRegistrationsSupportPrivacy() {
+		return cartItems.hasOnlyDomainRegistrationsWithPrivacySupport( this.props.cart );
+	}
+
 	allDomainRegistrationsHavePrivacy() {
 		return cartItems.getDomainRegistrationsWithoutPrivacy( this.props.cart ).length === 0;
 	}
@@ -357,7 +361,7 @@ class DomainDetailsForm extends Component {
 				return;
 			}
 
-			if ( ! this.allDomainRegistrationsHavePrivacy() ) {
+			if ( this.allDomainRegistrationsSupportPrivacy() && ! this.allDomainRegistrationsHavePrivacy() ) {
 				this.openDialog();
 				return;
 			}
@@ -399,7 +403,7 @@ class DomainDetailsForm extends Component {
 	}
 
 	finish( options = {} ) {
-		this.setPrivacyProtectionSubscriptions( options.addPrivacy !== false );
+		this.setPrivacyProtectionSubscriptions( options.addPrivacy && options.addPrivacy !== false );
 
 		const allFieldValues = Object.assign( {}, formState.getAllFieldValues( this.state.form ) );
 		allFieldValues.phone = toIcannFormat( allFieldValues.phone, countries[ this.state.phoneCountryCode ] );
@@ -432,7 +436,11 @@ class DomainDetailsForm extends Component {
 
 		return (
 			<div>
-				{ cartItems.hasDomainRegistration( this.props.cart ) && this.renderPrivacySection() }
+				{
+					cartItems.hasDomainRegistration( this.props.cart ) &&
+					this.allDomainRegistrationsSupportPrivacy() &&
+					this.renderPrivacySection()
+				}
 				<PaymentBox
 					classSet={ classSet }
 					title={ title }>
