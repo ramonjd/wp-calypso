@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import { trim, debounce, identity } from 'lodash';
 import { localize } from 'i18n-calypso';
-import { connect } from 'react-redux';
 
 /**
  * Internal Dependencies
@@ -22,9 +21,7 @@ import SuggestionProvider from './suggestion-provider';
 import { RelatedPostCard } from 'blocks/reader-related-card-v2';
 import { SEARCH_RESULTS } from 'reader/follow-button/follow-sources';
 import MobileBackToSidebar from 'components/mobile-back-to-sidebar';
-import { requestFeedSearch } from 'state/reader/feed-searches/actions';
-import { getReaderFeedsForQuery } from 'state/selectors';
-import SubscriptionListItem from 'reader/following-manage/connected-subscription-list-item';
+import SiteResults from './site-results';
 
 class SearchStream extends Component {
 	static propTypes = {
@@ -190,51 +187,10 @@ class SearchStream extends Component {
 							</SegmentedControl> }
 					</CompactCard>
 				</div>
-				{ query && <ConnectedSiteResults query={ query } /> }
+				{ query && <SiteResults query={ query } /> }
 			</Stream>
 		);
 	}
 }
-
-class SitesResults extends React.Component {
-	componentWillMount() {
-		this.props.requestFeedSearch( this.props.query );
-	}
-
-	componentWillReceiveProps( nextProps ) {
-		if ( nextProps.query !== this.props.query ) {
-			this.props.requestFeedSearch( nextProps.query );
-		}
-	}
-
-	render() {
-		return (
-			<div className="search-stream__sites-results">
-				<h1 className="search-stream__sites-results-header">Sites</h1>
-				{ this.props.feeds
-					? this.props.feeds.map(
-							feed => (
-								<SubscriptionListItem
-									key={ feed.feed_ID }
-									feedId={ feed.feed_ID }
-									blogId={ feed.blogId }
-									showLastUpdatedDate={ false }
-								/>
-							)
-						)
-					: 'no results' }
-			</div>
-		);
-	}
-}
-
-const ConnectedSiteResults = connect(
-	( state, ownProps ) => {
-		return {
-			feeds: getReaderFeedsForQuery( state, ownProps.query ),
-		};
-	},
-	{ requestFeedSearch }
-)( SitesResults );
 
 export default SuggestionProvider( localize( SearchStream ) );
