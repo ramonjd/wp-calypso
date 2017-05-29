@@ -32,7 +32,7 @@ export class Login extends React.Component {
 	onMagicLoginRequestClick = event => {
 		event.preventDefault();
 		this.props.recordTracksEvent( 'calypso_login_magic_login_request_click' );
-		page( login( { twoFactorAuthType: 'link' } ) );
+		page( login( { isNative: true, twoFactorAuthType: 'link' } ) );
 	};
 
 	goBack = event => {
