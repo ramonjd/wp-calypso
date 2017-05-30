@@ -1,5 +1,5 @@
 .is-reader-page .main.search-stream {
-	max-width: 900px;
+	max-width: 960px;
 }
 
 .search-stream__intro {
@@ -225,14 +225,6 @@ $reader-related-card-v2-breakpoint-small: "( max-width: 535px )";
 }
 
 // Post and Site results
-.search-stream .section-nav {
-	box-shadow: none;
-	background: inherit;
-	border-bottom: 2px solid lighten( $gray, 20% );
-	padding-bottom: 0;
-	margin-bottom: 0;
-}
-
 .search-stream .search-stream__results {
 	display: flex;
 	margin-top: 140px;
@@ -242,6 +234,7 @@ $reader-related-card-v2-breakpoint-small: "( max-width: 535px )";
 	color: $gray;
 	display: flex;
 	font-weight: 600;
+	letter-spacing: .1em;
 	list-style-type: none;
 	margin: 0;
 	padding-top: 20px;
@@ -264,7 +257,11 @@ $reader-related-card-v2-breakpoint-small: "( max-width: 535px )";
 .search-stream .search-stream__site-results {
 	max-width: 265px;
 	min-width: 265px;
-	padding-left: 40px;
+	margin-left: 40px;
+
+	.reader-infinite-stream__row-wrapper {
+		border: 0;
+	}
 
 	.reader-subscription-list-item .follow-button__label {
 		display: none;
@@ -272,16 +269,25 @@ $reader-related-card-v2-breakpoint-small: "( max-width: 535px )";
 }
 
 // Posts and sites Sites SectionNav
+.search-stream .section-nav {
+	background: inherit;
+	border-bottom: 2px solid lighten( $gray, 30% );
+	box-shadow: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
 .search-stream .section-nav-group {
 	display: flex;
-	width: 0;
 	flex: 1 0 auto;
+	width: 0;
+
+	@include breakpoint( "<480px" ) {
+		margin-top: 0;
+	}
 }
 
-.search-stream .section-nav-tabs__dropdown {
-	display: none;
-}
-
+.search-stream .section-nav-tabs__dropdown,
 .search-stream .section-nav__mobile-header {
 	display: none;
 }
@@ -292,18 +298,26 @@ $reader-related-card-v2-breakpoint-small: "( max-width: 535px )";
 	.section-nav-tab.is-selected {
 		border-bottom: 2px solid $gray-dark;
 	}
+
+	.section-nav-tab__link {
+		background-color: transparent;
+		color: $blue-wordpress;
+		padding: 16px;
+
+		&:hover {
+			color: $blue-medium;
+		}
+	}
+
+	.is-selected .section-nav-tab__link {
+		color: $gray-dark;
+	}
 }
 
 .search-stream .section-nav-tab__text {
-	font-weight: normal;
+	font-weight: 600;
+	font-size: 13px;
+	letter-spacing: .04em;
+	text-transform: uppercase;
 	width: 100%;
-}
-
-.search-stream .is-selected .section-nav-tab__link {
-	background-color: transparent;
-	color: $blue-wordpress;
-
-	&:hover {
-		color: inherit;
-	}
 }
