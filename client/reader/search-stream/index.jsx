@@ -176,7 +176,6 @@ class SearchStream extends Component {
 					{ query &&
 						<SearchStreamHeader
 							wideDisplay={ wideDisplay }
-							translate={ translate }
 							selected={ searchType }
 							onSelection={ this.handleSearchTypeSelection }
 						/> }
