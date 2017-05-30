@@ -91,17 +91,17 @@ class MagicLogin extends React.Component {
 		} = this.props;
 
 		return (
-			<Main className="wp-login">
+			<Main className="magic-login">
 				<PageViewTracker path="/login" title="Login" />
 
 				<GlobalNotices id="notices" notices={ notices.list } />
 
 				{ this.magicLoginMainContent() || (
 					<div>
-						<div className="wp-login__container">
+						<div className="magic-login__container">
 							<RequestLoginEmailForm />
 						</div>
-						<div className="wp-login__footer">
+						<div className="magic-login__footer">
 							<a href="#"
 								key="enter-password-link"
 								onClick={ this.onClickEnterPasswordInstead }>
