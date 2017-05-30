@@ -3,6 +3,7 @@
  */
 import settingsGeneral from './settings/general/reducer';
 import productCategories from './product-categories/reducer';
+import shippingMethods from './shipping-methods/reducer';
 import shippingZones from './shipping-zones/reducer';
 import products from './products/reducer';
 
@@ -11,6 +12,7 @@ const initialState = {};
 const handlers = {
 	...productCategories,
 	...settingsGeneral,
+	...shippingMethods,
 	...shippingZones,
 	...products,
 };
