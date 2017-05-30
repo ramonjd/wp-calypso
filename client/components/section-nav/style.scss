@@ -152,6 +152,23 @@
 	}
 }
 
+// Force the wider breakpoint settings if collapseOnMobile=false
+.section-nav.hide-mobile-header .section-nav__mobile-header {
+	display: none;
+}
+
+.section-nav.hide-mobile-header .section-nav-group {
+	margin-top: 0;
+	padding-top: 0;
+	border-top: none;
+
+	&:first-child {
+		display: flex;
+		width: 0;
+		flex: 1 0 auto;
+	}
+}
+
 .section-nav__button {
 	width: 100%;
 	margin-top: 24px;

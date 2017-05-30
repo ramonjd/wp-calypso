@@ -27,12 +27,14 @@ var NavTabs = React.createClass( {
 		selectedText: React.PropTypes.string,
 		selectedCount: React.PropTypes.number,
 		label: React.PropTypes.string,
-		hasSiblingControls: React.PropTypes.bool
+		hasSiblingControls: React.PropTypes.bool,
+		collapseOnMobile: React.PropTypes.bool,
 	},
 
 	getDefaultProps: function() {
 		return {
-			hasSiblingControls: false
+			hasSiblingControls: false,
+			collapseOnMobile: true,
 		};
 	},
 
@@ -64,7 +66,7 @@ var NavTabs = React.createClass( {
 
 		var tabsClassName = classNames( {
 			'section-nav-tabs': true,
-			'is-dropdown': this.state.isDropdown,
+			'is-dropdown': this.state.isDropdown && this.props.shouldCollapseOnMobile,
 			'is-open': this.state.isDropdownOpen,
 			'has-siblings': this.props.hasSiblingControls
 		} );
@@ -90,6 +92,7 @@ var NavTabs = React.createClass( {
 					{
 						this.state.isDropdown &&
 						innerWidth > MOBILE_PANEL_THRESHOLD &&
+						this.props.shouldCollapseOnMobile &&
 						this.getDropdown()
 					}
 				</div>
