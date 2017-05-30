@@ -11,12 +11,12 @@ import classnames from 'classnames';
  * Internal Dependencies
  */
 import ConnectedSubscriptionListItem from 'blocks/reader-subscription-list-item/connected';
-import SitesWindowScroller from './sites-window-scroller';
 import Button from 'components/button';
 import ReaderSubscriptionListItemPlaceholder
 	from 'blocks/reader-subscription-list-item/placeholder';
 import { READER_FOLLOWING_MANAGE_SEARCH_RESULT } from 'reader/follow-button/follow-sources';
 import { recordTracksRailcarRender } from 'reader/stats';
+import InfiniteStream from 'components/reader-infinite-stream';
 
 const FollowingManageSearchFeedsResults = ( {
 	showMoreResults,
@@ -99,12 +99,12 @@ const FollowingManageSearchFeedsResults = ( {
 
 	return (
 		<div className={ classNames }>
-			<SitesWindowScroller
+			<InfiniteStream
 				showLastUpdatedDate={ false }
-				sites={ searchResults }
+				items={ searchResults }
 				width={ width }
 				fetchNextPage={ fetchNextPage }
-				remoteTotalCount={ searchResultsCount }
+				totalCount={ searchResultsCount }
 				forceRefresh={ forceRefresh }
 				followSource={ READER_FOLLOWING_MANAGE_SEARCH_RESULT }
 			/>
