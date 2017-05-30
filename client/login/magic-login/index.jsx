@@ -26,7 +26,6 @@ import HandleEmailedLinkForm from '../magic-login/handle-emailed-link-form';
 import {
 	hideMagicLoginRequestForm,
 	showMagicLoginInterstitialPage,
-	showMagicLoginRequestForm,
 } from 'state/login/magic-login/actions';
 import Main from 'components/main';
 import RequestLoginEmailForm from '../magic-login/request-login-email-form';
@@ -44,7 +43,6 @@ class MagicLogin extends React.Component {
 		magicLoginView: PropTypes.string,
 		recordTracksEvent: PropTypes.func.isRequired,
 		showMagicLoginInterstitialPage: PropTypes.func.isRequired,
-		showMagicLoginRequestForm: PropTypes.func.isRequired,
 		translate: PropTypes.func.isRequired,
 	};
 
@@ -128,7 +126,6 @@ const mapState = state => {
 const mapDispatch = {
 	hideMagicLoginRequestForm,
 	showMagicLoginInterstitialPage,
-	showMagicLoginRequestForm,
 	recordTracksEvent,
 };
 
