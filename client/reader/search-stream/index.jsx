@@ -13,9 +13,6 @@ import ControlItem from 'components/segmented-control/item';
 import SegmentedControl from 'components/segmented-control';
 import CompactCard from 'components/card/compact';
 import DocumentHead from 'components/data/document-head';
-// import Stream from 'reader/stream';
-// import EmptyContent from './empty';
-// import HeaderBack from 'reader/header-back';
 import SearchInput from 'components/search';
 import { recordAction, recordTrack } from 'reader/stats';
 import { RelatedPostCard } from 'blocks/reader-related-card-v2';
@@ -23,70 +20,12 @@ import { RelatedPostCard } from 'blocks/reader-related-card-v2';
 import SiteResults from './site-results';
 import PostResults from './post-results';
 import ReaderMain from 'components/reader-main';
-import NavTabs from 'components/section-nav/tabs';
-import SectionNav from 'components/section-nav';
-import NavItem from 'components/section-nav/item';
 import { addQueryArgs } from 'lib/url';
-
-class SearchStreamHeader extends Component {
-	static propTypes = {
-		translate: PropTypes.func,
-		wideDisplay: PropTypes.bool,
-		selected: PropTypes.oneOf( [ 'Posts', 'Sites' ] ),
-	};
-
-	handlePostsSelected = () =>
-		page.replace(
-			addQueryArgs( { searchType: 'Posts' }, window.location.pathname + window.location.search )
-		);
-	handleSitesSelected = () =>
-		page.replace(
-			addQueryArgs( { searchType: 'Sites' }, window.location.pathname + window.location.search )
-		);
-
-	render() {
-		const { translate, wideDisplay } = this.props;
-
-		if ( wideDisplay ) {
-			return (
-				<div className="search-stream__headers">
-					<div className="search-stream__post-header">
-						<h1 className="search-stream__results-header">{ translate( 'Posts' ) }</h1>
-					</div>
-					<div className="search-stream__site-header">
-						<h1 className="search-stream__results-header">{ translate( 'Sites' ) }</h1>
-					</div>
-				</div>
-			);
-		}
-		return (
-			<div>
-				<SectionNav>
-					<NavTabs>
-						<NavItem
-							key={ 'posts-nav' }
-							selected={ this.props.selected === 'Posts' }
-							onClick={ this.handlePostsSelected }
-						>
-							Posts
-						</NavItem>
-						<NavItem
-							key={ 'sites-nav' }
-							selected={ this.props.selected === 'Sites' }
-							onClick={ this.handleSitesSelected }
-						>
-							Sites
-						</NavItem>
-					</NavTabs>
-				</SectionNav>
-			</div>
-		);
-	}
-}
+import SearchStreamHeader, { POSTS } from './search-stream-header';
 
 class SearchStream extends Component {
 	static propTypes = {
-		query: React.PropTypes.string,
+		query: PropTypes.string,
 	};
 
 	componentWillReceiveProps( nextProps ) {
@@ -179,6 +118,11 @@ class SearchStream extends Component {
 		this.props.onSortChange( 'date' );
 	};
 
+	handleSearchTypeSelection = searchType =>
+		page.replace(
+			addQueryArgs( { searchType }, window.location.pathname + window.location.search )
+		);
+
 	render() {
 		const { query, translate, searchType } = this.props;
 		// const emptyContent = <EmptyContent query={ query } />;
@@ -234,6 +178,7 @@ class SearchStream extends Component {
 							wideDisplay={ wideDisplay }
 							translate={ translate }
 							selected={ searchType }
+							onSelection={ this.handleSearchTypeSelection }
 						/> }
 				</div>
 				{ wideDisplay &&
@@ -248,8 +193,7 @@ class SearchStream extends Component {
 					</div> }
 				{ ! wideDisplay &&
 					<div className="search-stream__single-column-results">
-						{' '}
-						{ ( searchType === 'Posts' && <PostResults { ...this.props } /> ) ||
+						{ ( searchType === POSTS && <PostResults { ...this.props } /> ) ||
 							<SiteResults query={ query } /> }
 					</div> }
 			</ReaderMain>
