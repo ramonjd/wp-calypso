@@ -34,14 +34,10 @@ class SearchStreamHeader extends Component {
 
 		if ( wideDisplay ) {
 			return (
-				<div className="search-stream__headers">
-					<div className="search-stream__post-header">
-						<h1 className="search-stream__results-header">{ translate( 'Posts' ) }</h1>
-					</div>
-					<div className="search-stream__site-header">
-						<h1 className="search-stream__results-header">{ translate( 'Sites' ) }</h1>
-					</div>
-				</div>
+				<ul className="search-stream__headers">
+					<li className="search-stream__post-header">{ translate( 'Posts' ) }</li>
+					<li className="search-stream__site-header">{ translate( 'Sites' ) }</li>
+				</ul>
 			);
 		}
 
