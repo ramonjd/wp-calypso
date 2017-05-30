@@ -210,7 +210,6 @@ $reader-related-card-v2-breakpoint-small: "( max-width: 535px )";
 .card.reader-search-card {
 
 	&.is-photo {
-		border: 1px solid red;
 
 		@include breakpoint( "<660px" ) {
 			z-index: z-index( 'root', '.reader-search-card' );
