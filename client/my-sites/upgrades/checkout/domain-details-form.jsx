@@ -520,7 +520,7 @@ class DomainDetailsForm extends PureComponent {
 		let title;
 		// TODO: gather up tld specific stuff
 		if ( this.state.currentStep === 'fr' ) {
-			title = '.FR Registration';
+			title = this.props.translate( '.FR Registration' );
 		} else if ( needsOnlyGoogleAppsDetails ) {
 			title = this.props.translate( 'G Suite Account Information' );
 		} else {
