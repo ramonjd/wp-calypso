@@ -43,7 +43,7 @@ class SearchStreamHeader extends Component {
 
 		return (
 			<div>
-				<SectionNav collapseOnMobile={ false }>
+				<SectionNav>
 					<NavTabs>
 						<NavItem
 							key={ 'posts-nav' }

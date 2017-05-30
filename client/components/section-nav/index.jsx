@@ -24,7 +24,6 @@ var SectionNav = React.createClass( {
 		hasPinnedItems: React.PropTypes.bool,
 		onMobileNavPanelOpen: React.PropTypes.func,
 		className: React.PropTypes.string,
-		collapseOnMobile: React.PropTypes.bool,
 	},
 
 	getInitialState: function() {
@@ -35,8 +34,7 @@ var SectionNav = React.createClass( {
 
 	getDefaultProps: function() {
 		return {
-			onMobileNavPanelOpen: () => {},
-			collapseOnMobile: true,
+			onMobileNavPanelOpen: () => {}
 		};
 	},
 
@@ -78,8 +76,7 @@ var SectionNav = React.createClass( {
 		className = classNames( {
 			'section-nav': true,
 			'is-open': this.state.mobileOpen,
-			'has-pinned-items': this.hasPinnedSearch || this.props.hasPinnedItems,
-			'hide-mobile-header': ! this.props.collapseOnMobile,
+			'has-pinned-items': this.hasPinnedSearch || this.props.hasPinnedItems
 		}, this.props.className );
 
 		return (
@@ -104,8 +101,7 @@ var SectionNav = React.createClass( {
 		return React.Children.map( this.props.children, function( child ) {
 			var extraProps = {
 				hasSiblingControls: this.hasSiblingControls,
-				closeSectionNavMobilePanel: this.closeMobilePanel,
-				collapseOnMobile: this.props.collapseOnMobile,
+				closeSectionNavMobilePanel: this.closeMobilePanel
 			};
 
 			if ( ! child ) {

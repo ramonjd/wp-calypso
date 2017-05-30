@@ -277,6 +277,14 @@ $reader-related-card-v2-breakpoint-small: "( max-width: 535px )";
 	flex: 1 0 auto;
 }
 
+.search-stream .section-nav-tabs__dropdown {
+	display: none;
+}
+
+.search-stream .section-nav__mobile-header {
+	display: none;
+}
+
 .search-stream .section-nav-tabs__list {
 	display: flex;
 
