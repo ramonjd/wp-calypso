@@ -15,6 +15,7 @@ import { getPaymentMethodsGroup } from '../../../state/wc-api/payment-methods/se
 import List from '../../../components/list/list';
 import ListHeader from '../../../components/list/list-header';
 import ListItemField from '../../../components/list/list-item-field';
+import PaymentMethodEdit from './payment-method-edit';
 import PaymentMethodItem from './payment-method-item';
 
 class SettingsPaymentsOffSite extends Component {
@@ -29,7 +30,10 @@ class SettingsPaymentsOffSite extends Component {
 
 	renderMethodItem = ( method ) => {
 		return (
-			<PaymentMethodItem key={ method.title } method={ method } />
+			<div key={ method.title }>
+				<PaymentMethodItem method={ method } />
+				<PaymentMethodEdit settingsFields={ method.settings } />
+			</div>
 		);
 	}
 
