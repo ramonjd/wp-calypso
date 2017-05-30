@@ -96,9 +96,7 @@ class MagicLogin extends React.Component {
 
 				{ this.magicLoginMainContent() || (
 					<div>
-						<div className="magic-login__container">
-							<RequestLoginEmailForm />
-						</div>
+						<RequestLoginEmailForm />
 						<div className="magic-login__footer">
 							<a href="#"
 								key="enter-password-link"
