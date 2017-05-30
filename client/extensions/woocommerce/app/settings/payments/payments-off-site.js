@@ -11,7 +11,7 @@ import { localize } from 'i18n-calypso';
  */
 import ExtendedHeader from '../../../components/extended-header';
 import { fetchPaymentMethods } from '../../../state/wc-api/payment-methods/actions';
-import { getPaymentMethodsGroup } from '../../../state/wc-api/payment-methods/selectors';
+import { getPaymentMethodsGroup } from '../../../state/ui/payments/methods/selectors';
 import List from '../../../components/list/list';
 import ListHeader from '../../../components/list/list-header';
 import ListItemField from '../../../components/list/list-item-field';
