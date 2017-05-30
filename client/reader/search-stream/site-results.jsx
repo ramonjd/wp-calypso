@@ -19,23 +19,22 @@ class SitesResults extends React.Component {
 	};
 
 	render() {
-		const { query, translate, searchResults } = this.props;
+		const { query, searchResults } = this.props;
 
 		return (
 			<div>
 				<QueryReaderFeedsSearch query={ query } />
-				{ searchResults
-					? searchResults.map(
-							feed => (
-								<SubscriptionListItem
-									key={ feed.feed_ID }
-									feedId={ +feed.feed_ID }
-									blogId={ +feed.blogId }
-									showLastUpdatedDate={ false }
-								/>
-							)
+				{ ( searchResults || [] )
+					.map(
+						feed => (
+							<SubscriptionListItem
+								key={ feed.feed_ID }
+								feedId={ +feed.feed_ID }
+								blogId={ +feed.blogId }
+								showLastUpdatedDate={ false }
+							/>
 						)
-					: translate( 'no results' ) }
+					) }
 			</div>
 		);
 	}
