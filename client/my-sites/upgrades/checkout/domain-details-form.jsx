@@ -531,6 +531,7 @@ class DomainDetailsForm extends PureComponent {
 			<div>
 				{ cartItems.hasDomainRegistration( this.props.cart ) && this.renderPrivacySection() }
 				<PaymentBox
+					currentPage={ this.state.currentStep }
 					classSet={ classSet }
 					title={ title }>
 					{ this.renderCurrentForm() }
