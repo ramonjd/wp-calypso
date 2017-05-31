@@ -20,13 +20,16 @@
 	}
 }
 
-// Turn off all the number spinners
+// Turn off number spinners
 .registrant-extra-info__form {
-	// Turn off number spinners
-	input[type=number]::-webkit-inner-spin-button,
-	input[type=number]::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
+	input[type=number] {
+		moz-appearance: textfield;
+
+		&::-webkit-inner-spin-button,
+		&::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
 	}
 }
 
