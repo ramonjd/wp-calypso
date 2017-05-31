@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
 import { groupBy, map, isEmpty } from 'lodash';
@@ -34,6 +34,16 @@ import ActivityLogBanner from '../activity-log-banner';
 import ActivityLogToggle from '../activity-log-toggle';
 
 class ActivityLog extends Component {
+	static propTypes = {
+		siteId: PropTypes.number.isRequired,
+		startDate: PropTypes.string,
+	};
+
+	static defaultProps = {
+		siteId: '',
+		startDate: '',
+	};
+
 	componentDidMount() {
 		window.scrollTo( 0, 0 );
 	}
@@ -134,13 +144,8 @@ class ActivityLog extends Component {
 			activityLog,
 			moment,
 			siteId,
+			startDate,
 		} = this.props;
-
-		// eslint-disable-next-line
-		console.log( siteId );
-		if ( ! siteId ) {
-			return null;
-		}
 
 		const logs = ( activityLog && activityLog.data ? activityLog.data : [] );
 		const logsGroupedByDate = map(
@@ -163,8 +168,8 @@ class ActivityLog extends Component {
 
 		return (
 			<Main wideLayout={ true }>
-				<QueryActivityLog siteId={ siteId } />
 				<QueryRewindStatus siteId={ siteId } />
+				<QueryActivityLog siteId={ siteId } startDate={ startDate } />
 				<StatsFirstView />
 				<SidebarNavigation />
 				<StatsNavigation
@@ -228,8 +233,8 @@ export default connect(
 			isAnythingRestoring: isAnythingRestoring( state, siteId ),
 			isActivatingRewind: isActivatingRewind( state, siteId ),
 			isDeactivatingRewind: isDeactivatingRewind( state, siteId ),
-			getRewindStartDate: getRewindStartDate( state, siteId ),
-			getRewindStatusError: getRewindStatusError( state, siteId )
+			startDate: getRewindStartDate( state, siteId ),
+			getRewindStatusError: getRewindStatusError( state, siteId ),
 		};
 	},
 	{
