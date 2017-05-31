@@ -8,93 +8,47 @@ import {
 	CellMeasurerCache,
 	CellMeasurer,
 	InfiniteLoader,
-	AutoSizer,
 } from 'react-virtualized';
-import { debounce, noop, get } from 'lodash';
-
-/**
- * Internal Dependencies
- */
-import ConnectedSubscriptionListItem from 'blocks/reader-subscription-list-item/connected';
+import { debounce, noop } from 'lodash';
 
 class ReaderInfiniteStream extends Component {
 	static propTypes = {
 		items: PropTypes.array.isRequired,
+		width: PropTypes.number.isRequired,
+		rowRenderer: PropTypes.func.isRequired,
 		fetchNextPage: PropTypes.func,
-		forceRefresh: PropTypes.any, // forceRefresh can be anything. Whenever we want to force a refresh, it should change
+		hasNextPage: PropTypes.func,
+		forceRefresh: PropTypes.any, // forceRefresh can be anything -- if truthy then will force rv to update grid
 		windowScrollerRef: PropTypes.func,
 		showLastUpdatedDate: PropTypes.bool,
 		followSource: PropTypes.string,
-		itemType: PropTypes.oneOf( [ 'site', 'post' ] ),
-		totalCount: PropTypes.number,
-		estimatedRowHeight: PropTypes.number,
+		minHeight: PropTypes.number,
 	};
 
 	static defaultProps = {
 		windowScrollerRef: noop,
 		showLastUpdatedDate: true,
-		itemType: 'site',
-		totalCount: 170,
-		estimatedRowHeight: 120,
+		minHeight: 70,
+		hasNextPage: () => false,
 	};
 
 	heightCache = new CellMeasurerCache( {
 		fixedWidth: true,
-		minHeight: this.props.estimatedRowHeight,
+		minHeight: this.props.minHeight,
 	} );
 
-	// eslint-disable-next-line no-unused-vars
-	postRowRenderer = ( { index, key, style, parent } ) => {
-		// todo: implement
-		return null;
-	};
-
-	// TODO: why doesn't this work?
-	siteRowRenderer = ( { index, key, style, parent } ) => {
+	rowRenderer = rowRendererProps => {
 		const { followSource, showLastUpdatedDate, items } = this.props;
-		const site = items[ index ];
-
-		const feedUrl = get( site, 'feed_URL' );
-		const feedId = +get( site, 'feed_ID' );
-		const siteId = +get( site, 'blog_ID' );
-
-		const props = { url: feedUrl, feedId, siteId, followSource, showLastUpdatedDate };
-		return this.measuredRowRenderer(
-			{ ComponentToMeasure: ConnectedSubscriptionListItem, props, key, index, style, parent }
-		);
+		this.props.rowRenderer( {
+			followSource,
+			showLastUpdatedDate,
+			sites: items,
+			rowRendererProps,
+			measuredRowRenderer: this.measuredRowRenderer,
+		} );
 	};
 
-	oldSiteRowRenderer = ( { index, key, style, parent } ) => {
-		const site = this.props.items[ index ];
-		const feedUrl = get( site, 'feed_URL' );
-		const feedId = +get( site, 'feed_ID' );
-		const siteId = +get( site, 'blog_ID' );
-
-		return (
-			<CellMeasurer
-				cache={ this.heightCache }
-				columnIndex={ 0 }
-				key={ key }
-				rowIndex={ index }
-				parent={ parent }
-			>
-				{ ( { measure } ) => (
-					<div key={ key } style={ style } className="reader-infinite-stream__row-wrapper">
-						<ConnectedSubscriptionListItem
-							url={ feedUrl }
-							feedId={ feedId }
-							siteId={ siteId }
-							onLoad={ measure }
-							followSource={ this.props.followSource }
-							showLastUpdatedDate={ this.props.showLastUpdatedDate }
-						/>
-					</div>
-				) }
-			</CellMeasurer>
-		);
-	};
-
-	measuredRowRenderer = ( { ComponentToMeasure, props, key, index, style } ) => (
+	measuredRowRenderer = ( ComponentToMeasure, props, { key, index, style, parent } ) => (
 		<CellMeasurer
 			cache={ this.heightCache }
 			columnIndex={ 0 }
@@ -130,7 +84,6 @@ class ReaderInfiniteStream extends Component {
 	// initially I had created a promise that would setInterval and see if the startIndex
 	// exists in sites, and if so the resolve. It was super hacky, and its muchs simpler to just fake that it instantly
 	// returns
-	// TODO: does a util function exist that return waitFor( thingToExistInStateTree )? that would be perfect.
 	loadMoreRows = ( { startIndex } ) => {
 		this.props.fetchNextPage( startIndex );
 		return Promise.resolve();
@@ -151,14 +104,8 @@ class ReaderInfiniteStream extends Component {
 	}
 
 	render() {
-		const rowRenderer = this.props.itemType === 'site'
-			? this.oldSiteRowRenderer
-			: this.postRowRenderer;
-
-		// todo implement an actual HasNextPage or take one in as a prop
-		const rowCount = this.props.items.length < this.props.totalCount
-			? this.props.items.length + 1
-			: this.props.items.length;
+		const { hasNextPage, width } = this.props;
+		const rowCount = hasNextPage() ? this.props.items.length + 1 : this.props.items.length;
 
 		return (
 			<InfiniteLoader
@@ -169,22 +116,17 @@ class ReaderInfiniteStream extends Component {
 				{ ( { onRowsRendered, registerChild } ) => (
 					<WindowScroller ref={ this.props.windowScrollerRef }>
 						{ ( { height, scrollTop } ) => (
-							<AutoSizer disableHeight>
-								{ ( { width } ) => (
-									<List
-										autoHeight
-										height={ height }
-										rowCount={ rowCount }
-										rowHeight={ this.heightCache.rowHeight }
-										rowRenderer={ rowRenderer }
-										onRowsRendered={ onRowsRendered }
-										ref={ this.handleListMounted( registerChild ) }
-										scrollTop={ scrollTop }
-										width={ this.props.width || width }
-										deferredMeasurementCache={ this.heightCache }
-									/>
-								) }
-							</AutoSizer>
+							<List
+								autoHeight
+								height={ height }
+								rowCount={ rowCount }
+								rowHeight={ this.heightCache.rowHeight }
+								rowRenderer={ this.rowRenderer }
+								onRowsRendered={ onRowsRendered }
+								ref={ this.handleListMounted( registerChild ) }
+								scrollTop={ scrollTop }
+								width={ width }
+							/>
 						) }
 					</WindowScroller>
 				) }

@@ -141,6 +141,7 @@ class FollowingManage extends Component {
 	};
 
 	fetchNextPage = offset => this.props.requestFeedSearch( this.props.sitesQuery, offset );
+	hasNextPage = offset => offset <= 190;
 
 	handleShowMoreClicked = () => {
 		recordTrack( 'calypso_reader_following_manage_search_more_click' );
@@ -262,6 +263,7 @@ class FollowingManage extends Component {
 						showMoreResultsClicked={ this.handleShowMoreClicked }
 						width={ this.state.width }
 						fetchNextPage={ this.fetchNextPage }
+						hasNextPage={ this.hasNextPage }
 						forceRefresh={ this.props.sitesQuery }
 						searchResultsCount={ searchResultsCount }
 						query={ sitesQuery }
