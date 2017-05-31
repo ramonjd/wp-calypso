@@ -16,6 +16,7 @@ var debug = require( 'debug' )( 'calypso:wpcom-undocumented:undocumented' ),
  */
 var Site = require( './site' ),
 	Me = require( './me' ),
+	Service = require( './service' ),
 	MailingList = require( './mailing-list' ),
 	AccountRecoveryReset = require( './account-recovery-reset' ),
 	config = require( 'config' ),
@@ -72,6 +73,10 @@ Undocumented.prototype.mailingList = function( category ) {
 
 Undocumented.prototype.accountRecoveryReset = function( userData ) {
 	return new AccountRecoveryReset( userData, this.wpcom );
+};
+
+Undocumented.prototype.service = function() {
+	return new Service( this.wpcom );
 };
 
 /*
