@@ -75,17 +75,72 @@ MediaActions.fetchNextPage = function( siteId ) {
 
 	query = MediaListStore.getNextPageQuery( siteId );
 
-	debug( 'Fetching media for %d using query %o', siteId, query );
-	wpcom.site( siteId ).mediaList( query, function( error, data ) {
-		Dispatcher.handleServerAction( {
-			type: 'RECEIVE_MEDIA_ITEMS',
-			error: error,
-			siteId: siteId,
-			data: data,
-			query: query
+	if ( query.source === 'wpcom' ) {
+		debug( 'Fetching WordPress media for %d using query %o - source = %s', siteId, query, query.source );
+
+		wpcom.site( siteId ).mediaList( query, function( error, data ) {
+			Dispatcher.handleServerAction( {
+				type: 'RECEIVE_MEDIA_ITEMS',
+				error: error,
+				siteId: siteId,
+				data: data,
+				query: query
+			} );
 		} );
-	} );
+	} else {
+		debug( 'Fetching external media for %d using query %o - source = %s', siteId, query, query.source );
+
+		wpcom.undocumented().service().mediaList( query, ( error, data ) => {
+			Dispatcher.handleServerAction( {
+				type: 'RECEIVE_MEDIA_ITEMS',
+				error: error,
+				siteId: siteId,
+				data: data,
+				query: query
+			} );
+		} );
+	}
 };
+
+function getUploadForPost( file, post ) {
+	const title = file.title;
+	const isUrl = 'string' === typeof file;
+
+	if ( file.thumbnails ) {
+		return file.guid;
+	}
+
+	if ( post && post.ID ) {
+		file = {
+			parent_id: post.ID,
+			[ isUrl ? 'url' : 'file' ]: file
+		};
+	} else if ( file.fileContents ) {
+		//if there's no parent_id, but the file object is wrapping a Blob
+		//(contains fileContents, fileName etc) still wrap it in a new object
+		file = {
+			file: file
+		};
+	}
+
+	if ( title ) {
+		file.title = title;
+	}
+
+	return file;
+}
+
+// XXX this binding isnt good
+function getUploader( siteId, file ) {
+	if ( file.thumbnails ) {
+		return wpcom.undocumented().service().media( siteId ).copy.bind( wpcom.undocumented().service().media( siteId ) );
+	}
+
+	const isUrl = 'string' === typeof file;
+	const addHandler = isUrl ? 'addMediaUrls' : 'addMediaFiles';
+
+	return wpcom.site( siteId )[ addHandler ].bind( wpcom.site( siteId ) );
+}
 
 MediaActions.add = function( siteId, files ) {
 	if ( files instanceof window.FileList ) {
@@ -125,37 +180,19 @@ MediaActions.add = function( siteId, files ) {
 			return Promise.resolve();
 		}
 
-		// Determine upload mechanism by object type
-		const isUrl = 'string' === typeof file;
-		const addHandler = isUrl ? 'addMediaUrls' : 'addMediaFiles';
-
 		// Assign parent ID if currently editing post
 		const post = PostEditStore.get();
-		const title = file.title;
-		if ( post && post.ID ) {
-			file = {
-				parent_id: post.ID,
-				[ isUrl ? 'url' : 'file' ]: file
-			};
-		} else if ( file.fileContents ) {
-			//if there's no parent_id, but the file object is wrapping a Blob
-			//(contains fileContents, fileName etc) still wrap it in a new object
-			file = {
-				file: file
-			};
-		}
+		const addHandler = getUploader( siteId, file );
+		const content = getUploadForPost( file, post );
 
-		if ( title ) {
-			file.title = title;
-		}
-
-		debug( 'Uploading media to %d from %o', siteId, file );
+		debug( 'Uploading media to %d from %o', siteId, content );
 
 		return lastUpload.then( () => {
 			// Achieve series upload by waiting for the previous promise to
 			// resolve before starting this item's upload
 			const action = { type: 'RECEIVE_MEDIA_ITEM', id: transientMedia.ID, siteId };
-			return wpcom.site( siteId )[ addHandler ]( {}, file ).then( ( data ) => {
+
+			return addHandler( {}, content ).then( ( data ) => {
 				Dispatcher.handleServerAction( Object.assign( action, {
 					data: data.media[ 0 ]
 				} ) );
@@ -283,6 +320,15 @@ MediaActions.clearValidationErrorsByType = function( siteId, type ) {
 		type: 'CLEAR_MEDIA_VALIDATION_ERRORS',
 		siteId: siteId,
 		errorType: type
+	} );
+};
+
+MediaActions.changeSource = function( siteId, source ) {
+	debug( 'Changing media source to ' + source );
+	Dispatcher.handleViewAction( {
+		type: 'SET_MEDIA_SOURCE',
+		siteId,
+		source,
 	} );
 };
 
