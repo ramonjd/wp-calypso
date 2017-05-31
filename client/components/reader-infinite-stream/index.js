@@ -37,16 +37,14 @@ class ReaderInfiniteStream extends Component {
 		minHeight: this.props.minHeight,
 	} );
 
-	rowRenderer = rowRendererProps => {
-		const { followSource, showLastUpdatedDate, items } = this.props;
+	rowRenderer = rowRendererProps =>
 		this.props.rowRenderer( {
-			followSource,
-			showLastUpdatedDate,
-			sites: items,
+			followSource: this.props.followSource,
+			showLastUpdatedDate: this.props.showLastUpdatedDate,
+			sites: this.props.items,
 			rowRendererProps,
 			measuredRowRenderer: this.measuredRowRenderer,
 		} );
-	};
 
 	measuredRowRenderer = ( ComponentToMeasure, props, { key, index, style, parent } ) => (
 		<CellMeasurer
