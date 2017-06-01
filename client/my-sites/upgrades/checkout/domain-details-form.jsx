@@ -108,11 +108,11 @@ class DomainDetailsForm extends PureComponent {
 		onComplete( sanitizedFieldValues );
 	}
 
-	hasAnotherStep = () => {
+	hasAnotherStep() {
 		return this.state.currentStep !== last( this.state.steps );
 	}
 
-	switchToNextStep = () => {
+	switchToNextStep() {
 		const newStep = this.state.steps[ indexOf( this.state.steps, this.state.currentStep ) + 1 ];
 		debug( 'Switching to step: ' + newStep );
 		this.setState( { currentStep: newStep } );
@@ -185,7 +185,7 @@ class DomainDetailsForm extends PureComponent {
 		} );
 	}
 
-	getAllFieldValues = () => {
+	getAllFieldValues() {
 		const allFieldValues = Object.assign(
 			{},
 			formState.getAllFieldValues( this.state.form ),
@@ -197,7 +197,7 @@ class DomainDetailsForm extends PureComponent {
 		return allFieldValues;
 	}
 
-	getRequiredExtraSteps = () => {
+	getRequiredExtraSteps() {
 		if ( ! config.isEnabled( 'domains/cctlds' ) ) {
 			// All we need to do to disable everything is not show the .FR form
 			return [];
@@ -210,7 +210,7 @@ class DomainDetailsForm extends PureComponent {
 		return cartItems.getDomainRegistrations( this.props.cart ).length;
 	}
 
-	getFieldProps = ( name ) => {
+	getFieldProps( name ) {
 		return {
 			name,
 			ref: name,
@@ -227,15 +227,15 @@ class DomainDetailsForm extends PureComponent {
 		};
 	}
 
-	needsFax = () => {
+	needsFax() {
 		return formState.getFieldValue( this.state.form, 'countryCode' ) === 'NL' && cartItems.hasTld( this.props.cart, 'nl' );
 	}
 
-	allDomainRegistrationsHavePrivacy = () => {
+	allDomainRegistrationsHavePrivacy() {
 		return cartItems.getDomainRegistrationsWithoutPrivacy( this.props.cart ).length === 0;
 	}
 
-	renderSubmitButton = () => {
+	renderSubmitButton() {
 		const continueText = this.hasAnotherStep()
 			? this.props.translate( 'Continue' )
 			: this.props.translate( 'Continue to Checkout' );
@@ -269,7 +269,7 @@ class DomainDetailsForm extends PureComponent {
 		this.setState( { registrantExtraInfo } );
 	}
 
-	renderNameFields = () => {
+	renderNameFields() {
 		return (
 			<div>
 				<Input
@@ -282,7 +282,7 @@ class DomainDetailsForm extends PureComponent {
 		);
 	}
 
-	renderOrganizationField = () => {
+	renderOrganizationField() {
 		return <HiddenInput
 			label={ this.props.translate( 'Organization' ) }
 			text={ this.props.translate(
@@ -364,7 +364,7 @@ class DomainDetailsForm extends PureComponent {
 		);
 	}
 
-	renderDetailsForm = () => {
+	renderDetailsForm() {
 		const needsOnlyGoogleAppsDetails = this.needsOnlyGoogleAppsDetails();
 
 		return (
@@ -385,7 +385,7 @@ class DomainDetailsForm extends PureComponent {
 		);
 	}
 
-	renderExtraDetailsForm = () => {
+	renderExtraDetailsForm() {
 		return ( <ExtraInfoFrForm
 			isProbablyOrganization={ Boolean( formState.getFieldValue( this.state.form, 'organization' ) ) }
 			countryCode={ formState.getFieldValue( this.state.form, 'countryCode' ) }
@@ -469,7 +469,7 @@ class DomainDetailsForm extends PureComponent {
 		} );
 	}
 
-	finish = ( options = {} ) => {
+	finish( options = {} ) {
 		this.setPrivacyProtectionSubscriptions( options.addPrivacy !== false );
 
 		const allFieldValues = this.getAllFieldValues();
@@ -486,7 +486,7 @@ class DomainDetailsForm extends PureComponent {
 		}
 	}
 
-	renderCurrentForm = () => {
+	renderCurrentForm() {
 		switch ( this.state.currentStep ) {
 			// TODO: gather up tld specific stuff
 			case 'fr':

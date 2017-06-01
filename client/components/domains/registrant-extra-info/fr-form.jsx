@@ -106,11 +106,11 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 	}
 
 	// We need a deep comparison to check inside props.values
-	shouldComponentUpdate = ( nextProps ) => {
+	shouldComponentUpdate( nextProps ) {
 		return ! isEqual( this.props, nextProps );
 	}
 
-	render = () => {
+	render() {
 		const translate = this.props.translate;
 		const {
 			registrantType
@@ -158,7 +158,7 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 		);
 	}
 
-	renderPersonalFields = () => {
+	renderPersonalFields() {
 		const translate = this.props.translate;
 		const screenReaderText = 'screen-reader-text';
 		const {
@@ -273,7 +273,7 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 		);
 	}
 
-	renderOrganizationFields = () => {
+	renderOrganizationFields() {
 		const translate = this.props.translate;
 		const {
 			registrantVatId,
@@ -342,7 +342,7 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 		);
 	}
 
-	renderOptional = () => {
+	renderOptional() {
 		return (
 			<span className="registrant-extra-info__optional-label">{ this.props.translate( 'Optional' ) }</span>
 		);
