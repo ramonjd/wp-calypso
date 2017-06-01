@@ -7,15 +7,15 @@ import { expect } from 'chai';
  * Internal dependencies
  */
 import {
-	makeProductApiPlan,
+	makeProductActionList,
 } from '../actions';
 import {
 	WOOCOMMERCE_API_CREATE_PRODUCT,
 } from '../../../action-types';
 
-describe( 'makeProductApiPlan', () => {
+describe( 'makeProductActionList', () => {
 	it( 'should return null when there are no edits', () => {
-		expect( makeProductApiPlan( null, 123, null ) ).to.equal.null;
+		expect( makeProductActionList( null, 123, null ) ).to.equal.null;
 	} );
 
 	it( 'should return a single API request for a single simple product create', () => {
@@ -25,11 +25,11 @@ describe( 'makeProductApiPlan', () => {
 			]
 		};
 
-		const plan = [
+		const actionList = [
 			{ operation: WOOCOMMERCE_API_CREATE_PRODUCT, payload: { siteId: 123, id: { index: 0 } } },
 		];
 
-		expect( makeProductApiPlan( null, 123, edits ) ).to.eql( plan );
+		expect( makeProductActionList( null, 123, edits ) ).to.eql( actionList );
 	} );
 
 	it( 'should return multiple API create requests for multiple products to be created', () => {
@@ -40,12 +40,12 @@ describe( 'makeProductApiPlan', () => {
 			]
 		};
 
-		const plan = [
+		const actionList = [
 			{ operation: WOOCOMMERCE_API_CREATE_PRODUCT, payload: { siteId: 123, id: { index: 0 } } },
 			{ operation: WOOCOMMERCE_API_CREATE_PRODUCT, payload: { siteId: 123, id: { index: 1 } } },
 		];
 
-		expect( makeProductApiPlan( null, 123, edits ) ).to.eql( plan );
+		expect( makeProductActionList( null, 123, edits ) ).to.eql( actionList );
 	} );
 } );
 
