@@ -9,7 +9,7 @@ import React, { PropTypes } from 'react';
 /**
  * Internal dependencies
  */
-import { NESTED_SIDEBAR_REVISIONS } from '../editor-sidebar/util';
+import { NESTED_SIDEBAR_REVISIONS } from 'post-editor/editor-sidebar/util';
 
 function EditorRevisions( { revisions = [], translate, toggleNestedSidebar } ) {
 	if ( ! revisions || ! revisions.length ) {
