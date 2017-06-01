@@ -6,17 +6,14 @@ import React, { PureComponent } from 'react';
 /**
  * Internal dependencies
  */
-const countriesList = require( 'lib/countries-list' ).forDomainRegistrations(),
-	Card = require( 'components/card' ),
-	ExtraInfoFrForm = require( 'components/domains/registrant-extra-info/fr-form' ).default;
+import Card from 'components/card';
+import ExtraInfoFrForm from 'components/domains/registrant-extra-info/fr-form';
+import { forDomainRegistrations as getCountries } from 'lib/countries-list';
+const countriesList = getCountries();
 
 class ExtraInfoFrFormExample extends PureComponent {
-	constructor( props ) {
-		super( props );
-
-		this.state = {
-			registrantExtraInfo: {},
-		};
+	state = {
+		registrantExtraInfo: {},
 	}
 
 	handleExtraChange = ( registrantExtraInfo ) => {
@@ -43,4 +40,4 @@ class ExtraInfoFrFormExample extends PureComponent {
 	}
 }
 
-module.exports = ExtraInfoFrFormExample;
+export default ExtraInfoFrFormExample;
