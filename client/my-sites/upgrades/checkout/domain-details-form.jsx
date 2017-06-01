@@ -414,7 +414,7 @@ class DomainDetailsForm extends PureComponent {
 	}
 
 	handleSubmitButtonClick = ( event ) => {
-		event && event.preventDefault();
+		event.preventDefault();
 
 		this.formStateController.handleSubmit( ( hasErrors ) => {
 			this.recordSubmit();
