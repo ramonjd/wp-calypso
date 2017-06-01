@@ -4,6 +4,7 @@
 import settingsGeneral from './settings/general/reducer';
 import productCategories from './product-categories/reducer';
 import shippingMethods from './shipping-methods/reducer';
+import shippingZoneMethods from './shipping-zone-methods/reducer';
 import shippingZones from './shipping-zones/reducer';
 import products from './products/reducer';
 
@@ -15,6 +16,7 @@ const handlers = {
 	...productCategories,
 	...settingsGeneral,
 	...shippingMethods,
+	...shippingZoneMethods,
 	...shippingZones,
 	...products,
 };

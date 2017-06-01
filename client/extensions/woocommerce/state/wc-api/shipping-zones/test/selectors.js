@@ -6,8 +6,11 @@ import { expect } from 'chai';
 /**
  * Internal dependencies
  */
-import { getAPIShippingZones, areShippingZonesLoaded, areShippingZonesLoading } from '../selectors';
-import { LOADING } from '../reducer';
+import {
+	getAPIShippingZones,
+	areShippingZonesLoaded,
+	areShippingZonesLoading,
+} from '../selectors';
 import { LOADING } from 'woocommerce/state/wc-api/reducer';
 
 describe( 'selectors', () => {
@@ -24,7 +27,7 @@ describe( 'selectors', () => {
 			expect( areShippingZonesLoading( state, 123 ) ).to.be.false;
 		} );
 
-		it( 'when zones are loaded.', () => {
+		it( 'when zones are loaded - empty list.', () => {
 			const state = {
 				extensions: {
 					woocommerce: {
@@ -38,6 +41,50 @@ describe( 'selectors', () => {
 			};
 
 			expect( getAPIShippingZones( state, 123 ) ).to.deep.equal( [] );
+			expect( areShippingZonesLoaded( state, 123 ) ).to.be.true;
+			expect( areShippingZonesLoading( state, 123 ) ).to.be.false;
+		} );
+
+		it( 'when zones are loaded but some methods are not.', () => {
+			const shippingZones = [
+				{ id: 1, methodIds: LOADING },
+				{ id: 2, methodIds: [ 7, 42 ] },
+			];
+			const state = {
+				extensions: {
+					woocommerce: {
+						wcApi: {
+							123: {
+								shippingZones,
+							},
+						},
+					},
+				},
+			};
+
+			expect( getAPIShippingZones( state, 123 ) ).to.deep.equal( shippingZones );
+			expect( areShippingZonesLoaded( state, 123 ) ).to.be.false;
+			expect( areShippingZonesLoading( state, 123 ) ).to.be.true;
+		} );
+
+		it( 'when zones are loaded and all methods are loaded too.', () => {
+			const shippingZones = [
+				{ id: 1, methodIds: [ 3 ] },
+				{ id: 2, methodIds: [ 7, 42 ] },
+			];
+			const state = {
+				extensions: {
+					woocommerce: {
+						wcApi: {
+							123: {
+								shippingZones,
+							},
+						},
+					},
+				},
+			};
+
+			expect( getAPIShippingZones( state, 123 ) ).to.deep.equal( shippingZones );
 			expect( areShippingZonesLoaded( state, 123 ) ).to.be.true;
 			expect( areShippingZonesLoading( state, 123 ) ).to.be.false;
 		} );
@@ -66,7 +113,7 @@ describe( 'selectors', () => {
 					woocommerce: {
 						wcApi: {
 							123: {
-								shippingZones: [],
+								shippingZones: {},
 							},
 						},
 					},

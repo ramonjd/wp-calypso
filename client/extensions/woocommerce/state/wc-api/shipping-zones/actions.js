@@ -2,15 +2,16 @@
  * Internal dependencies
  */
 import request from '../request';
-import { setError } from '../../site/status/wc-api/actions';
+import { setError } from 'woocommerce/state/site/status/wc-api/actions';
 import {
 	WOOCOMMERCE_API_FETCH_SHIPPING_ZONES,
 	WOOCOMMERCE_API_FETCH_SHIPPING_ZONES_SUCCESS,
-} from '../../action-types';
+} from 'woocommerce/state/action-types';
 import {
 	areShippingZonesLoaded,
 	areShippingZonesLoading,
 } from './selectors';
+import { fetchShippingZoneMethods } from '../shipping-zone-methods/actions';
 
 export const fetchShippingZonesSuccess = ( siteId, data ) => {
 	return {
@@ -35,10 +36,16 @@ export const fetchShippingZones = ( siteId ) => ( dispatch, getState ) => {
 	dispatch( getAction );
 
 	return request( siteId ).get( 'shipping/zones' )
-		.then( ( data ) => {
-			dispatch( fetchShippingZonesSuccess( siteId, data ) );
-		} )
 		.catch( err => {
 			dispatch( setError( siteId, getAction, err ) );
+		} )
+		.then( ( data ) => {
+			if ( ! data ) {
+				return;
+			}
+			dispatch( fetchShippingZonesSuccess( siteId, data ) );
+			return Promise.all( data.map( zone => {
+				return fetchShippingZoneMethods( siteId, zone.id )( dispatch, getState );
+			} ) );
 		} );
 };
