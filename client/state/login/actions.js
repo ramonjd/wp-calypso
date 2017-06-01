@@ -31,7 +31,7 @@ import {
 	getTwoFactorAuthNonce,
 } from 'state/login/selectors';
 
-const loginErrorMessages = {
+const errorMessages = {
 	account_unactivated: translate( "This account hasn't been activated yet — check your email for a message from " +
 		"WordPress.com and click the activation link. You'll be able to log in after that." ),
 	empty_password: translate( 'Please be sure to enter your password.' ),
@@ -51,8 +51,7 @@ const loginErrorMessages = {
 		'Please double check your information and try again.' ),
 };
 
-const loginErrorFields = {
-	account_unactivated: 'global',
+const errorFields = {
 	empty_password: 'password',
 	empty_two_step_code: 'twoStepCode',
 	empty_username: 'usernameOrEmail',
@@ -60,23 +59,35 @@ const loginErrorFields = {
 	invalid_email: 'usernameOrEmail',
 	invalid_two_step_code: 'twoStepCode',
 	invalid_username: 'usernameOrEmail',
-	unknown: 'global',
 };
 
-function getMessageFromHTTPError( error ) {
-	const errorKeys = get( error, 'response.body.data.errors' );
+/**
+ * Retrieves the first error message from the specified HTTP error.
+ *
+ * @param {Object} error HTTP error
+ * @returns {{message: string, field: string}} an error message and the id of the corresponding field, if not global
+ */
+function getErrorMessage( error ) {
+	let message;
+	let field = 'global';
 
-	if ( errorKeys ) {
-		return errorKeys.map( errorKey => {
-			if ( errorKey in loginErrorMessages ) {
-				return loginErrorMessages[ errorKey ];
+	const errorKey = get( error, 'response.body.data.errors[0]' );
+
+	if ( errorKey ) {
+		if ( errorKey in errorMessages ) {
+			message = errorMessages[ errorKey ];
+
+			if ( errorKey in errorFields ) {
+				field = errorFields[ errorKey ];
 			}
-
-			return errorKey;
-		} ).join( ' ' );
+		} else {
+			message = errorKey;
+		}
+	} else {
+		message = get( error, 'response.body.data', error.message );
 	}
 
-	return get( error, 'response.body.data', error.message );
+	return { message, field };
 }
 
 /**
@@ -111,16 +122,15 @@ export const loginUser = ( usernameOrEmail, password, rememberMe ) => dispatch =
 				data: response.body && response.body.data,
 			} );
 		} ).catch( ( error ) => {
-			const message = getMessageFromHTTPError( error );
-			const field = loginErrorFields[ get( error, 'response.body.data.errors', [] )[ 0 ] ];
+			const errorMessage = getErrorMessage( error );
 
 			dispatch( {
 				type: LOGIN_REQUEST_FAILURE,
 				usernameOrEmail,
-				error: { message, field },
+				error: errorMessage,
 			} );
 
-			return Promise.reject( { message, field } );
+			return Promise.reject( errorMessage );
 		} );
 };
 
@@ -129,6 +139,7 @@ export const loginUser = ( usernameOrEmail, password, rememberMe ) => dispatch =
  *
  * @param  {String}    two_step_code  Verification code for the user.
  * @param  {Boolean}   remember_me       Flag for remembering the user for a while after logging in.
+ * @param {String}     twoFactorAuthType Two factor authentication method
  * @return {Function}                 Action thunk to trigger the login process.
  */
 export const loginUserWithTwoFactorVerificationCode = ( two_step_code, remember_me, twoFactorAuthType ) => ( dispatch, getState ) => {
@@ -150,7 +161,7 @@ export const loginUserWithTwoFactorVerificationCode = ( two_step_code, remember_
 			dispatch( { type: TWO_FACTOR_AUTHENTICATION_LOGIN_REQUEST_SUCCESS } );
 		} )
 		.catch( ( error ) => {
-			const errorMessage = getMessageFromHTTPError( error );
+			const errorMessage = getErrorMessage( error );
 
 			dispatch( {
 				type: TWO_FACTOR_AUTHENTICATION_UPDATE_NONCE,
@@ -191,7 +202,7 @@ export const loginSocialUser = ( service, token ) => dispatch => {
 			dispatch( { type: SOCIAL_LOGIN_REQUEST_SUCCESS } );
 		} )
 		.catch( ( error ) => {
-			const errorMessage = getMessageFromHTTPError( error );
+			const errorMessage = getErrorMessage( error );
 
 			dispatch( {
 				type: SOCIAL_LOGIN_REQUEST_FAILURE,
@@ -242,12 +253,11 @@ export const sendSmsCode = () => ( dispatch, getState ) => {
 				twoStepNonce: get( response, 'body.data.two_step_nonce' ),
 			} );
 		} ).catch( ( error ) => {
-			const field = 'global';
-			const message = getMessageFromHTTPError( error );
+			const errorMessage = getErrorMessage( error );
 
 			dispatch( {
 				type: TWO_FACTOR_AUTHENTICATION_SEND_SMS_CODE_REQUEST_FAILURE,
-				error: { message, field },
+				error: errorMessage,
 				twoStepNonce: get( error, 'response.body.data.two_step_nonce' )
 			} );
 		} );
