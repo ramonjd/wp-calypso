@@ -197,7 +197,9 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 								id="dobYears"
 								value={ dobYears }
 								type="number"
-								placeholder="YYYY"
+								placeholder={ translate( 'YYYY', {
+									comment: 'Placeholder text for the year part of a date input. Indicates that the user should enter a year as a 4 digit value', // eslint-disable-line max-len
+								} ) }
 								onChange={ this.handleDobChangeEvent } />
 						</div>
 						<div className="registrant-extra-info__dob-column">
@@ -209,7 +211,9 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 								value={ dobMonths }
 								max="2"
 								type="number"
-								placeholder="MM"
+								placeholder={ translate( 'MM', {
+									comment: 'Placeholder text for the month part of a date input. Indicates that the user should enter a month as a 2 digit value', // eslint-disable-line max-len
+								} ) }
 								onChange={ this.handleDobChangeEvent } />
 						</div>
 						<div className="registrant-extra-info__dob-column">
@@ -221,7 +225,9 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 								value={ dobDays }
 								max="2"
 								type="number"
-								placeholder="DD"
+								placeholder={ translate( 'DD', {
+									comment: 'Placeholder text for the day part of a date input. Indicates that the user should enter a day as a 2 digit value', // eslint-disable-line max-len
+								} ) }
 								onChange={ this.handleDobChangeEvent } />
 						</div>
 					</div>
