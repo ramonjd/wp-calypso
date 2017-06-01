@@ -10,7 +10,7 @@ import reducer from '../../reducer';
 import { LOADING } from '../reducer';
 import {
 	WOOCOMMERCE_API_FETCH_SHIPPING_METHODS,
-} from '../../../action-types';
+} from 'woocommerce/state/action-types';
 import { fetchShippingMethodsSuccess } from '../actions';
 
 describe( 'fetch shipping methods', () => {

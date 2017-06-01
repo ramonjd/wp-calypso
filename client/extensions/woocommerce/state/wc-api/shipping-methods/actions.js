@@ -2,11 +2,11 @@
  * Internal dependencies
  */
 import request from '../request';
-import { setError } from '../../site/status/wc-api/actions';
+import { setError } from 'woocommerce/state/site/status/wc-api/actions';
 import {
 	WOOCOMMERCE_API_FETCH_SHIPPING_METHODS,
 	WOOCOMMERCE_API_FETCH_SHIPPING_METHODS_SUCCESS,
-} from '../../action-types';
+} from 'woocommerce/state/action-types';
 import {
 	areShippingMethodsLoaded,
 	areShippingMethodsLoading,
