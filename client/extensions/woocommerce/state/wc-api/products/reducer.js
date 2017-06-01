@@ -1,23 +1,26 @@
 /**
  * Internal dependencies
  */
+import { get } from 'lodash';
 import {
 	WOOCOMMERCE_API_CREATE_PRODUCT,
-	WOOCOMMERCE_API_CREATE_PRODUCT_SUCCESS,
 } from '../../action-types';
 
 export default {
-	[ WOOCOMMERCE_API_CREATE_PRODUCT ]: createProduct,
-	[ WOOCOMMERCE_API_CREATE_PRODUCT_SUCCESS ]: createProductSuccess,
+	[ WOOCOMMERCE_API_CREATE_PRODUCT ]: productCreate,
 };
 
-function createProduct( siteData ) {
-	// TODO: Update state to show pending status.
+function productCreate( siteData, action ) {
+	const data = get( action, 'meta.dataLayer.data.data' );
+
+	if ( data ) {
+		return updateCachedProduct( siteData, data );
+	}
+
 	return siteData;
 }
 
-function createProductSuccess( siteData, action ) {
-	const { product } = action.payload;
+function updateCachedProduct( siteData, product ) {
 	const products = siteData.products || [];
 
 	let found = false;
@@ -33,6 +36,6 @@ function createProductSuccess( siteData, action ) {
 		newProducts.push( product );
 	}
 
-	return siteData;
+	return { ...siteData, products: newProducts };
 }
 
