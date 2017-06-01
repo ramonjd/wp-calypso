@@ -114,21 +114,10 @@ class DomainDetailsForm extends PureComponent {
 		return this.state.currentStep !== last( this.state.steps );
 	}
 
-	hasPreviousStep = () => {
-		return this.state.currentStep !== first( this.state.steps );
-	}
-
 	switchToNextStep = () => {
 		const newStep = this.state.steps[ indexOf( this.state.steps, this.state.currentStep ) + 1 ];
 		debug( 'Switching to step: ' + newStep );
 		this.setState( { currentStep: newStep } );
-	}
-
-	switchToPreviousStep = () => {
-		const currentIndex = indexOf( this.state.steps, this.state.currentStep );
-		const newStep = this.state.steps[ Math.max( 0, currentIndex - 1 ) ];
-		debug( 'Switching back to step:' + newStep );
-		return this.setState( { currentStep: newStep } );
 	}
 
 	validate = ( fieldValues, onComplete ) => {

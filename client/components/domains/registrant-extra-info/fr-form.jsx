@@ -35,22 +35,6 @@ const emptyValues = {
 	trademarkNumber: '',
 };
 
-export function getRelevantFields( state ) {
-	const { countryOfBirth, registrantType } = state;
-	const bornInFrance = countryOfBirth === 'FR';
-	const birthPlaceFields = [ 'placeOfBirth', 'postalCodeOfBirth' ];
-	const individualFields = [
-		'countryOfBirth',
-		'dateOfBirth',
-		...( bornInFrance ? birthPlaceFields : [] ),
-	];
-	const organizationalFields = [ 'registrantVatId', 'sirenSiret', 'trademarkNumber' ];
-	const conditionalFields = registrantType === 'individual'
-		? individualFields
-		: organizationalFields;
-	return [ 'registrantType', ...conditionalFields ];
-}
-
 class RegistrantExtraInfoForm extends React.PureComponent {
 	static propTypes = {
 		countriesList: PropTypes.object.isRequired,
