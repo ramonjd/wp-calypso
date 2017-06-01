@@ -5,8 +5,7 @@ import {
 	WOOCOMMERCE_API_FETCH_SETTINGS_GENERAL,
 	WOOCOMMERCE_API_FETCH_SETTINGS_GENERAL_SUCCESS,
 } from '../../../action-types';
-
-export const LOADING = 'LOADING';
+import { LOADING } from 'woocommerce/state/wc-api/reducer';
 
 // TODO: Handle error
 

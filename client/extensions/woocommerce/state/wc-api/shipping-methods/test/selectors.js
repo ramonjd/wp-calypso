@@ -7,7 +7,7 @@ import { expect } from 'chai';
  * Internal dependencies
  */
 import { getShippingMethods, areShippingMethodsLoaded, areShippingMethodsLoading } from '../selectors';
-import { LOADING } from '../reducer';
+import { LOADING } from 'woocommerce/state/wc-api/reducer';
 
 describe( 'selectors', () => {
 	describe( 'shipping methods loading state', () => {

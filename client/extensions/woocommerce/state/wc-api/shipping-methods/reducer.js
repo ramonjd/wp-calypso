@@ -5,8 +5,7 @@ import {
 	WOOCOMMERCE_API_FETCH_SHIPPING_METHODS,
 	WOOCOMMERCE_API_FETCH_SHIPPING_METHODS_SUCCESS,
 } from 'woocommerce/state/action-types';
-
-export const LOADING = 'LOADING';
+import { LOADING } from 'woocommerce/state/wc-api/reducer';
 
 // TODO: Handle error
 

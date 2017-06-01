@@ -7,7 +7,7 @@ import { expect } from 'chai';
  * Internal dependencies
  */
 import reducer from '../../reducer';
-import { LOADING } from '../reducer';
+import { LOADING } from 'woocommerce/state/wc-api/reducer';
 import {
 	WOOCOMMERCE_API_FETCH_SHIPPING_METHODS,
 } from 'woocommerce/state/action-types';

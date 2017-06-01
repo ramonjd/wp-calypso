@@ -8,6 +8,7 @@ import { expect } from 'chai';
  */
 import { getAPIShippingZones, areShippingZonesLoaded, areShippingZonesLoading } from '../selectors';
 import { LOADING } from '../reducer';
+import { LOADING } from 'woocommerce/state/wc-api/reducer';
 
 describe( 'selectors', () => {
 	describe( 'shipping zones loading state', () => {

@@ -7,6 +7,8 @@ import shippingMethods from './shipping-methods/reducer';
 import shippingZones from './shipping-zones/reducer';
 import products from './products/reducer';
 
+export const LOADING = 'LOADING';
+
 const initialState = {};
 
 const handlers = {

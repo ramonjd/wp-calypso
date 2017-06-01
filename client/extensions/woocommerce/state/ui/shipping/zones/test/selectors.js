@@ -14,7 +14,7 @@ import {
 	canRemoveShippingZone,
 	canEditShippingZoneLocations
 } from '../selectors';
-import { LOADING } from '../../../../wc-api/shipping-zones/reducer';
+import { LOADING } from 'woocommerce/state/wc-api/reducer';
 
 describe( 'selectors', () => {
 	describe( 'get shipping zones', () => {
