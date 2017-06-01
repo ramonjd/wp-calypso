@@ -53,6 +53,7 @@
 		"jetpack/invites": true,
 		"jetpack_core_inline_update": true,
 		"jetpack/api-cache": true,
+		"jetpack/pijp": true,
 		"keyboard-shortcuts": true,
 		"happychat": true,
 		"magic-login": true,
