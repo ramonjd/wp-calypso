@@ -11,8 +11,6 @@ const countriesList = require( 'lib/countries-list' ).forDomainRegistrations(),
 	ExtraInfoFrForm = require( 'components/domains/registrant-extra-info/fr-form' ).default;
 
 class ExtraInfoFrFormExample extends PureComponent {
-	static displayName = 'DomainsFrExtraForm'
-
 	constructor( props ) {
 		super( props );
 

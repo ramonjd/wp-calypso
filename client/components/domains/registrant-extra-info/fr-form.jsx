@@ -343,6 +343,4 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 	}
 }
 
-RegistrantExtraInfoForm.displayName = 'ExtraInfoFrForm';
-
 export default localize( RegistrantExtraInfoForm );
