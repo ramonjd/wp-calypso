@@ -42,8 +42,6 @@ const wpcom = wp.undocumented(),
 	countriesList = countriesListForDomainRegistrations();
 
 class DomainDetailsForm extends PureComponent {
-	static displayName = 'DomainDetailsForm';
-
 	constructor( props, context ) {
 		super( props, context );
 

@@ -54,10 +54,6 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 		onStateChanged: noop,
 	}
 
-	constructor( props ) {
-		super( props );
-	}
-
 	componentWillMount() {
 		const defaults = {
 			registrantType: this.props.isProbablyOrganization
