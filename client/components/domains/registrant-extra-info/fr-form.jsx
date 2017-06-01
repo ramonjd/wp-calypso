@@ -196,7 +196,6 @@ class RegistrantExtraInfoForm extends React.PureComponent {
 							<FormTextInput className="registrant-extra-info__dob-year"
 								id="dobYears"
 								value={ dobYears }
-								max="4"
 								type="number"
 								placeholder="YYYY"
 								onChange={ this.handleDobChangeEvent } />
